@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Prenotazioni, Meridiano</title>
+<meta name="description" content="Gestionale dimostrativo delle prenotazioni del ristorante immaginario Meridiano: pianta della sala, linea del tempo della serata e richieste arrivate dal sito.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1F140E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Prenotazioni, Meridiano">
+<meta property="og:description" content="Gestionale dimostrativo: pianta della sala, linea del tempo della serata e richieste arrivate dal sito.">
+<meta property="og:url" content="https://frnc1.github.io/meridiano/sala/">
+<meta property="og:image" content="https://frnc1.github.io/meridiano/assets/img/og-sala.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Il gestionale delle prenotazioni di Meridiano: la pianta della sala con i tavoli occupati e l’elenco della serata">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232B1B13'/%3E%3Cpath d='M8 42h48' stroke='%23F2ECDF' stroke-opacity='.55' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='42' r='10' fill='%23E8B84E'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/instrument-sans.woff" as="font" type="font/woff" crossorigin>
+<style>
+/* Instrument Sans per i dati, Bodoni Moda per il marchio: font ospitati in locale, nessuna richiesta esterna */
+@font-face{font-family:"Instrument Sans";src:url("../assets/fonts/instrument-sans.woff") format("woff");font-weight:400 700;font-stretch:75% 100%;font-display:swap}
+@font-face{font-family:"Bodoni Moda";src:url("../assets/fonts/bodoni-moda.woff") format("woff");font-weight:400 900;font-display:swap}
+
+/* Tema scuro: il gestionale si usa la sera, in una sala poco illuminata */
+:root{
+  --fondo:#1F140E;
+  --pannello:#2B1B13;
+  --rialzo:#3A271C;
+  --linea:rgba(242,236,223,.12);
+  --linea-2:rgba(242,236,223,.26);
+  --testo:#F2ECDF;
+  --testo-2:#BDB3A6;
+  --oro:#E8B84E;
+  --oro-chiaro:#F1CB6F;
+  --oro-velo:rgba(232,184,78,.16);
+  --rosa:#E58BA0;
+  --rosa-velo:rgba(229,139,160,.14);
+  --scuro:#1F140E;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Bodoni Moda","Bodoni 72",Didot,Georgia,serif;
+  --g:clamp(1rem,3vw,2rem);
+  --thumb:22px;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:var(--fondo);color:var(--testo);font:400 1rem/1.5 var(--sans);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--oro-chiaro);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.demo-bar{padding:.55rem var(--g);background:#140D09;color:var(--testo-2);font-size:.875rem;text-align:center}
+.demo-bar a{color:var(--testo);text-underline-offset:.2em}
+
+/* Pulsanti */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:2.75rem;padding:0 1.1rem;border:1px solid transparent;border-radius:999px;background:var(--oro);color:var(--scuro);font-weight:600;font-size:.9375rem;line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn:hover{background:var(--oro-chiaro)}
+.btn--ghost{border-color:var(--linea-2);background:transparent;color:var(--testo)}
+.btn--ghost:hover{border-color:var(--testo);background:transparent}
+.btn--s{min-height:2.25rem;padding:0 .8rem;font-size:.875rem}
+.btn--danger{border-color:rgba(229,139,160,.55);background:transparent;color:var(--rosa)}
+.btn--danger:hover,.btn--danger.is-armed{border-color:var(--rosa);background:var(--rosa-velo)}
+.icon-btn{display:inline-grid;place-items:center;flex:none;width:2.75rem;height:2.75rem;padding:0;border:1px solid var(--linea-2);border-radius:50%;background:transparent;cursor:pointer}
+.icon-btn:hover{border-color:var(--testo)}
+.icon-btn[disabled]{opacity:.3;cursor:not-allowed}
+.icon-btn svg{width:1.1rem;height:1.1rem}
+.badge{display:inline-grid;place-items:center;min-width:1.4rem;height:1.4rem;padding:0 .35rem;border-radius:999px;background:var(--rosa);color:var(--scuro);font-size:.8125rem;font-weight:700}
+.badge.is-zero{background:var(--linea-2);color:var(--testo-2)}
+.textlink{padding:0;border:0;background:none;color:var(--testo);text-decoration:underline;text-underline-offset:.2em;cursor:pointer}
+
+/* Testata */
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.25rem;padding:1rem var(--g) .85rem}
+.brand{display:flex;align-items:baseline;gap:.65rem;margin-right:auto}
+.brand__name{font-family:var(--serif);font-size:1.75rem;line-height:1}
+.brand__tool{color:var(--testo-2);font-size:.9375rem}
+.day-nav{display:flex;align-items:center;gap:.5rem}
+.day-title{min-width:11.5em;font:400 1.5rem/1.15 var(--serif);text-align:center}
+.top__actions{display:flex;flex-wrap:wrap;gap:.5rem}
+
+/* Giorni: navigazione e coperti a colpo d’occhio */
+.strip{display:flex;gap:.5rem;padding:0 var(--g) 1rem;overflow-x:auto;scrollbar-width:thin}
+.day{position:relative;flex:1 0 6.25rem;display:grid;gap:.05rem;padding:.55rem .75rem;border:1px solid var(--linea);border-radius:12px;background:transparent;text-align:left;cursor:pointer}
+.day:hover{border-color:var(--linea-2)}
+.day[aria-pressed="true"]{border-color:var(--oro);background:var(--rialzo)}
+.day__name{font-weight:600;font-size:.9375rem}
+.day__covers{color:var(--testo-2);font-size:.8125rem}
+.day.is-closed .day__name{color:var(--testo-2)}
+.day__dot{position:absolute;top:.6rem;right:.65rem;width:.5rem;height:.5rem;border-radius:50%;background:var(--rosa)}
+
+/* Tavola di lavoro */
+.board{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(21rem,1fr);align-items:start;gap:1rem;padding:0 var(--g) 1.5rem}
+.panel{padding:1.25rem;border-radius:20px;background:var(--pannello)}
+.panel-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem}
+.panel-title{font:400 1.75rem/1.1 var(--serif)}
+.now-tag{margin-left:.5rem;color:var(--oro);font:600 .8125rem/1 var(--sans);vertical-align:middle}
+.seg{display:inline-flex;padding:3px;border:1px solid var(--linea-2);border-radius:999px}
+.seg button{min-height:2.25rem;padding:0 .9rem;border:0;border-radius:999px;background:transparent;color:var(--testo-2);font-weight:600;font-size:.875rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--testo);color:var(--scuro)}
+
+/* La pianta della sala: i tavoli sono pulsanti sopra il disegno */
+.plan{position:relative;aspect-ratio:3/2;margin-top:1rem;container-type:inline-size}
+.plan__room{position:absolute;inset:0;width:100%;height:100%}
+.table{position:absolute;left:calc(var(--x) / 600 * 100%);top:calc(var(--y) / 400 * 100%);width:calc(var(--w) / 600 * 100%);height:calc(var(--h) / 400 * 100%);display:grid;place-content:center;gap:.1rem;padding:0 .2rem;border:1.5px solid var(--linea-2);border-radius:12px;background:var(--fondo);color:var(--testo-2);text-align:center;cursor:pointer;transform:translate(-50%,-50%);transition:background-color .2s,border-color .2s,color .2s,box-shadow .2s}
+.table--round{border-radius:50%}
+.table:hover{border-color:var(--testo)}
+.table__num{color:var(--testo);font-weight:700;font-size:clamp(.85rem,2.9cqw,1.2rem);line-height:1}
+.table__who{max-width:100%;overflow:hidden;font-size:clamp(.6rem,1.75cqw,.8rem);line-height:1.15;white-space:nowrap;text-overflow:ellipsis}
+.table.is-booked{border-color:var(--oro);background:#3A2A17;color:var(--testo)}
+.table.is-seated{border-color:var(--oro);background:var(--oro);color:var(--scuro)}
+.table.is-seated .table__num{color:var(--scuro)}
+.table.is-hint{box-shadow:0 0 0 3px var(--pannello),0 0 0 5px var(--testo)}
+.table[disabled]{cursor:default;opacity:.5}
+.plan__closed{position:absolute;inset:0;display:grid;place-items:center;padding:1rem;border-radius:16px;background:rgba(31,20,14,.72);color:var(--testo);font:400 1.375rem/1.3 var(--serif);text-align:center}
+@container (max-width:470px){.table__who{display:none}}
+
+/* La linea della serata: sposta il cursore e la pianta mostra chi è seduto a quell’ora */
+.timeline{margin-top:1.25rem}
+.timeline__bars{position:relative;height:3rem}
+.timeline__bar{position:absolute;bottom:0;width:var(--bw);height:var(--bh);min-height:2px;border-radius:3px 3px 0 0;background:rgba(232,184,78,.32);transform:translateX(-50%)}
+.timeline__bar.is-current{background:var(--oro)}
+.timeline__now{position:absolute;top:-.4rem;bottom:-1.4rem;width:2px;margin-left:-1px;background:var(--rosa)}
+.timeline__now span{position:absolute;top:-1.15rem;left:50%;color:var(--rosa);font-size:.75rem;font-weight:600;white-space:nowrap;transform:translateX(-50%)}
+.timeline__range{display:block;width:100%;height:1.75rem;margin:0;background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer}
+.timeline__range::-webkit-slider-runnable-track{height:2px;background:var(--linea-2)}
+.timeline__range::-webkit-slider-thumb{width:var(--thumb);height:var(--thumb);margin-top:calc(var(--thumb) / -2 + 1px);border:0;border-radius:50%;background:var(--testo);box-shadow:0 0 0 4px rgba(242,236,223,.12),0 0 20px 5px rgba(232,184,78,.45);-webkit-appearance:none;appearance:none}
+.timeline__range::-moz-range-track{height:2px;background:var(--linea-2)}
+.timeline__range::-moz-range-thumb{width:var(--thumb);height:var(--thumb);border:0;border-radius:50%;background:var(--testo);box-shadow:0 0 0 4px rgba(242,236,223,.12),0 0 20px 5px rgba(232,184,78,.45)}
+.timeline__ticks{position:relative;height:1.25rem;color:var(--testo-2);font-size:.8125rem}
+.timeline__ticks span{position:absolute;transform:translateX(-50%)}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.25rem;margin-top:.9rem;color:var(--testo-2);font-size:.875rem}
+.legend span::before{content:"";display:inline-block;width:.9rem;height:.9rem;margin-right:.45rem;vertical-align:-.12rem;border:1.5px solid var(--linea-2);border-radius:4px;background:var(--fondo)}
+.legend .l-booked::before{border-color:var(--oro);background:#3A2A17}
+.legend .l-seated::before{border-color:var(--oro);background:var(--oro)}
+
+/* Elenco della serata */
+.stats{margin-top:.35rem;color:var(--testo-2);font-size:.9375rem}
+.stats strong{color:var(--testo);font-weight:600}
+.warn{margin-top:.35rem;color:var(--rosa);font-size:.9375rem}
+.slot{margin-top:1.25rem}
+.slot__time{padding-bottom:.45rem;border-bottom:1px solid var(--linea);color:var(--oro);font:400 1.25rem/1 var(--serif)}
+.res{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;padding:.7rem 0;border-bottom:1px solid var(--linea)}
+.res__main{display:grid;flex:1 1 12rem;gap:.1rem;min-width:0;padding:.2rem 0;border:0;background:none;text-align:left;cursor:pointer}
+.res__name{font-weight:600;font-size:1.0625rem}
+.res__main:hover .res__name{text-decoration:underline;text-underline-offset:.2em}
+.res__meta{color:var(--testo-2);font-size:.9375rem}
+.res__note{color:var(--rosa);font-size:.9375rem}
+.res__actions{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem}
+.pill{display:inline-flex;align-items:center;min-height:2rem;padding:0 .7rem;border-radius:999px;font-size:.8125rem;font-weight:600;white-space:nowrap}
+.pill--seated{background:var(--oro);color:var(--scuro)}
+.pill--late{border:1px solid var(--rosa);color:var(--rosa)}
+.pill--noshow{background:var(--rosa-velo);color:var(--rosa)}
+.pill--done{border:1px solid var(--linea-2);color:var(--testo-2)}
+.pill--new{background:var(--rosa);color:var(--scuro)}
+.empty{margin-top:1.25rem;color:var(--testo-2)}
+
+/* Finestre di dialogo */
+.dlg{width:min(36rem,calc(100% - 2rem));max-height:calc(100dvh - 2rem);padding:0;border:1px solid var(--linea-2);border-radius:20px;background:var(--pannello);color:var(--testo)}
+.dlg--wide{width:min(44rem,calc(100% - 2rem))}
+.dlg::backdrop{background:rgba(10,6,4,.72)}
+.dlg__form{display:flex;flex-direction:column;max-height:calc(100dvh - 2rem)}
+.dlg__head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--linea)}
+.dlg__title{font:400 1.5rem/1.15 var(--serif)}
+.dlg__body{padding:1.25rem;overflow:auto}
+.dlg__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;padding:1rem 1.25rem;border-top:1px solid var(--linea)}
+.dlg__foot-right{display:flex;gap:.5rem;margin-left:auto}
+.field{display:grid;gap:.35rem;margin-bottom:1rem}
+.field__label{color:var(--testo-2);font-weight:600;font-size:.875rem}
+.field input,.field select,.field textarea{width:100%;min-width:0;min-height:2.75rem;padding:.55rem .75rem;border:1px solid var(--linea-2);border-radius:10px;background:var(--fondo);color:var(--testo);font-size:1rem;color-scheme:dark}
+.field textarea{resize:vertical}
+.field :is(input,select,textarea):focus{outline:none;border-color:var(--oro);box-shadow:0 0 0 3px rgba(232,184,78,.25)}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 .75rem}
+.grid-3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:0 .75rem}
+.hint{margin:-.5rem 0 1rem;color:var(--testo-2);font-size:.875rem}
+.form-error{margin:0 0 1rem;color:var(--rosa);font-size:.9375rem}
+
+/* Richieste dal sito */
+.req{padding:1rem 0;border-bottom:1px solid var(--linea)}
+.req:first-child{padding-top:0}
+.req:last-child{border-bottom:0}
+.req__head{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.req__name{font-weight:600;font-size:1.125rem}
+.req__when{margin-top:.15rem}
+.req__note{margin-top:.15rem;color:var(--rosa)}
+.req__status{margin-top:.5rem;color:var(--testo-2)}
+.req__actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
+.msg{margin-top:.75rem;padding:.85rem 1rem;border:1px solid var(--linea-2);border-radius:12px;background:var(--fondo);white-space:pre-line}
+.req .msg + .btn{margin-top:.6rem}
+
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem 2rem;padding:0 var(--g) 2rem;color:var(--testo-2);font-size:.875rem}
+.toast{position:fixed;left:50%;bottom:1.25rem;z-index:60;max-width:calc(100% - 2rem);padding:.75rem 1.1rem;border-radius:12px;background:var(--testo);color:var(--scuro);font-weight:600;font-size:.9375rem;opacity:0;pointer-events:none;transform:translate(-50%,.75rem);transition:opacity .2s,transform .2s}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.toast,.table{transition:none}}
+
+@media (min-width:1280px){
+  .top{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+  .brand{grid-column:1;grid-row:1;margin:0}
+  .day-nav{grid-column:2;grid-row:1}
+  .top__actions{grid-column:3;grid-row:1;justify-self:end}
+}
+@media (max-width:1100px){
+  .board{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:720px){
+  .top{gap:.65rem}
+  .brand__tool{display:none}
+  .day-nav{order:3;width:100%;justify-content:space-between}
+  .day-title{min-width:0;font-size:1.25rem}
+  .long{display:none}
+  .panel{padding:1rem}
+  .panel-title{font-size:1.5rem}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .grid-3 .field:first-child{grid-column:1/-1}
+  .grid-2{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<p class="demo-bar">Gestionale dimostrativo con dati inventati: le modifiche restano solo su questo dispositivo. <a href="../">Torna al sito di Meridiano</a></p>
+
+<header class="top">
+  <p class="brand"><span class="brand__name">Meridiano</span><span class="brand__tool">Prenotazioni</span></p>
+  <div class="top__actions">
+    <button class="btn btn--ghost" type="button" data-open-requests><span>Richieste<span class="long"> dal sito</span></span><span class="badge" data-req-count>0</span></button>
+    <button class="btn" type="button" data-new><span>Nuova<span class="long"> prenotazione</span></span></button>
+  </div>
+  <div class="day-nav">
+    <button class="icon-btn" type="button" data-day-prev aria-label="Giorno precedente"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <h1 class="day-title" data-day-title>Oggi</h1>
+    <button class="icon-btn" type="button" data-day-next aria-label="Giorno successivo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    <button class="btn btn--ghost btn--s" type="button" data-day-today>Oggi</button>
+  </div>
+</header>
+
+<nav class="strip" aria-label="Prossimi giorni" data-strip></nav>
+
+<main class="board">
+  <section class="panel" aria-labelledby="t-plan">
+    <div class="panel-head">
+      <h2 class="panel-title" id="t-plan">Sala alle <span data-plan-time>20:30</span><span class="now-tag" data-now-tag hidden>adesso</span></h2>
+      <div class="seg" role="group" aria-label="Servizio" data-services hidden>
+        <button type="button" data-svc="pranzo" aria-pressed="false">Pranzo</button>
+        <button type="button" data-svc="cena" aria-pressed="true">Cena</button>
+      </div>
+    </div>
+    <div class="plan" data-plan>
+      <svg class="plan__room" viewBox="0 0 600 400" aria-hidden="true" focusable="false" data-room>
+        <rect x="10" y="10" width="580" height="380" rx="22" fill="none" stroke="rgba(242,236,223,.26)" stroke-width="2"/>
+        <rect x="268" y="384" width="64" height="12" fill="#2B1B13"/>
+        <text x="300" y="372" fill="#BDB3A6" font-size="13" font-family="Instrument Sans, sans-serif" text-anchor="middle">Ingresso</text>
+        <rect x="40" y="34" width="230" height="34" rx="8" fill="rgba(232,184,78,.08)" stroke="rgba(232,184,78,.4)"/>
+        <text x="155" y="56" fill="#BDB3A6" font-size="13" font-family="Instrument Sans, sans-serif" text-anchor="middle">Banco</text>
+        <text x="560" y="40" fill="#BDB3A6" font-size="13" font-family="Instrument Sans, sans-serif" text-anchor="end">Cucina</text>
+        <g stroke="rgba(232,184,78,.32)" stroke-width="3" stroke-linecap="round">
+          <line x1="590" y1="90" x2="590" y2="190"/>
+          <line x1="590" y1="250" x2="590" y2="350"/>
+        </g>
+        <g data-chairs fill="rgba(242,236,223,.16)"></g>
+      </svg>
+      <div data-tables></div>
+      <p class="plan__closed" data-closed hidden>Il lunedì Meridiano è chiuso.</p>
+    </div>
+    <div class="timeline" data-timeline>
+      <div class="timeline__bars" data-bars aria-hidden="true"></div>
+      <input class="timeline__range" type="range" data-range aria-label="Ora della serata">
+      <div class="timeline__ticks" data-ticks aria-hidden="true"></div>
+    </div>
+    <p class="legend" aria-hidden="true"><span>Libero</span><span class="l-booked">Prenotato</span><span class="l-seated">Seduti</span></p>
+  </section>
+
+  <section class="panel" aria-labelledby="t-list">
+    <h2 class="panel-title" id="t-list" data-list-title>Cena</h2>
+    <p class="stats" data-stats></p>
+    <p class="warn" data-unassigned hidden></p>
+    <div data-list></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Ristorante immaginario: nomi, numeri e prenotazioni sono di fantasia. Design e sviluppo: Francesco Torricelli.</p>
+  <button class="textlink" type="button" data-reset>Ripristina i dati dimostrativi</button>
+</footer>
+
+<dialog class="dlg" data-dlg-res aria-labelledby="dlg-res-title">
+  <form class="dlg__form" data-res-form novalidate>
+    <div class="dlg__head">
+      <h2 class="dlg__title" id="dlg-res-title" data-res-title>Nuova prenotazione</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Chiudi"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9m0-9l-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    </div>
+    <div class="dlg__body">
+      <div class="grid-2">
+        <label class="field"><span class="field__label">Nome</span><input name="nome" autocomplete="off" required maxlength="60"></label>
+        <label class="field"><span class="field__label">Telefono</span><input name="tel" type="tel" inputmode="tel" autocomplete="off" maxlength="30"></label>
+      </div>
+      <div class="grid-3">
+        <label class="field"><span class="field__label">Giorno</span><input name="data" type="date" required></label>
+        <label class="field"><span class="field__label">Ora</span><select name="ora" required></select></label>
+        <label class="field"><span class="field__label">Persone</span>
+          <select name="persone">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+            <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+          </select>
+        </label>
+      </div>
+      <label class="field"><span class="field__label">Tavolo</span><select name="tavolo"></select></label>
+      <p class="hint" data-table-hint></p>
+      <div class="grid-2">
+        <label class="field"><span class="field__label">Arrivata da</span>
+          <select name="fonte"><option value="telefono">Telefono</option><option value="sito">Sito</option><option value="di persona">Di persona</option></select>
+        </label>
+      </div>
+      <label class="field"><span class="field__label">Note</span><textarea name="note" rows="2" maxlength="200" placeholder="Allergie, compleanni, richieste particolari"></textarea></label>
+      <p class="form-error" data-res-error role="alert" hidden></p>
+    </div>
+    <div class="dlg__foot">
+      <button class="btn btn--danger" type="button" data-res-cancel hidden>Annulla la prenotazione</button>
+      <div class="dlg__foot-right">
+        <button class="btn btn--ghost" type="button" data-close>Chiudi</button>
+        <button class="btn" type="submit">Salva</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="dlg dlg--wide" data-dlg-req aria-labelledby="dlg-req-title">
+  <div class="dlg__form">
+    <div class="dlg__head">
+      <h2 class="dlg__title" id="dlg-req-title">Richieste dal sito</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Chiudi"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9m0-9l-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+    </div>
+    <div class="dlg__body" data-req-list></div>
+  </div>
+</dialog>
+
+<p class="toast" role="status" aria-live="polite" data-toast></p>
+
+<script>
+(() => {
+  'use strict';
+
+  const KEY = 'meridiano-sala-demo-v1';
+  const INBOX = 'meridiano-sala-inbox';
+  const CAP = 28;
+  const ACTIVE = ['confermata', 'arrivati', 'conclusa'];
+  const DAYS_AHEAD = 89;
+
+  // La sala: 9 tavoli, 28 coperti. Coordinate nel disegno 600 x 400.
+  const TABLES = [
+    { id: 1, seats: 2, x: 80, y: 160, shape: 'round' },
+    { id: 2, seats: 2, x: 80, y: 250, shape: 'round' },
+    { id: 3, seats: 2, x: 80, y: 340, shape: 'round' },
+    { id: 4, seats: 4, x: 220, y: 170, shape: 'rect' },
+    { id: 5, seats: 4, x: 220, y: 300, shape: 'rect' },
+    { id: 6, seats: 4, x: 360, y: 170, shape: 'rect' },
+    { id: 7, seats: 2, x: 360, y: 300, shape: 'round' },
+    { id: 8, seats: 6, x: 500, y: 140, shape: 'rect' },
+    { id: 9, seats: 2, x: 500, y: 300, shape: 'round' },
+  ];
+  const SVC = {
+    pranzo: { label: 'Pranzo', slots: ['12:30', '13:00', '13:30'], from: 720, to: 930 },
+    cena: { label: 'Cena', slots: ['19:30', '20:00', '20:30', '21:00', '21:30'], from: 1140, to: 1410 },
+  };
+  const SURNAMES = ['Malagoli', 'Pellacani', 'Bergonzini', 'Montanari', 'Venturelli', 'Gualtieri', 'Lugli', 'Bertoni', 'Tosi', 'Barbieri', 'Fontana', 'Rinaldi', 'Guidetti', 'Zanni', 'Pancaldi', 'Righi', 'Vandelli', 'Sola', 'Boni', 'Cuoghi', 'Benassi', 'Messori', 'Morselli', 'Corradini', 'Golinelli', 'Manzini', 'Gibertini', 'Silingardi', 'Bulgarelli', 'Fiorini', 'Marchetti', 'Ori'];
+  const NOTES = ['Celiaca', 'Senza lattosio', 'Allergia alla frutta a guscio', 'Compleanno: candelina sul dolce', 'Serve un seggiolone', 'Tavolo vicino alla finestra', 'Vegetariani', 'Anniversario'];
+
+  // Utilità
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const toMin = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  const addDays = (iso, n) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+  const diffDays = (a, b) => Math.round((new Date(`${b}T12:00:00Z`) - new Date(`${a}T12:00:00Z`)) / 86400000);
+  const dow = (iso) => new Date(`${iso}T12:00:00Z`).getUTCDay();
+  const fmt = (iso, o) => new Intl.DateTimeFormat('it-IT', { timeZone: 'UTC', ...o }).format(new Date(`${iso}T12:00:00Z`));
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const dayLong = (iso) => fmt(iso, { weekday: 'long', day: 'numeric', month: 'long' });
+  const persone = (n) => `${n} ${n === 1 ? 'persona' : 'persone'}`;
+  const firstName = (nome) => nome.trim().split(/\s+/)[0];
+  const store = {
+    get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* memoria non disponibile: la demo funziona lo stesso */ } },
+    del(k) { try { localStorage.removeItem(k); } catch { /* idem */ } },
+  };
+
+  // Ora di Modena, qualunque sia il fuso di chi apre la pagina
+  function romeNow() {
+    const p = {};
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date()).forEach((x) => { p[x.type] = x.value; });
+    return { iso: `${p.year}-${p.month}-${p.day}`, min: Number(p.hour) * 60 + Number(p.minute) };
+  }
+
+  const servicesOf = (iso) => { const d = dow(iso); return d === 1 ? [] : d === 0 ? ['pranzo', 'cena'] : ['cena']; };
+  const slotsFor = (iso, svc) => (svc === 'cena' && dow(iso) === 0 ? SVC.cena.slots.slice(0, 4) : SVC[svc].slots);
+  const svcOfTime = (t) => (toMin(t) < 1020 ? 'pranzo' : 'cena');
+  const dur = (p) => (p >= 5 ? 150 : 120);
+  const interval = (r) => { const s = toMin(r.ora); return [s, r.fine != null ? r.fine : s + dur(r.persone)]; };
+  const overlaps = (a, b) => a[0] < b[1] && b[0] < a[1];
+  const occupies = (r, t) => { if (!ACTIVE.includes(r.stato)) return false; const [s, e] = interval(r); return t >= s && t < e; };
+
+  function tableFree(list, iso, id, iv, except) {
+    return !list.some((r) => r.id !== except && r.data === iso && r.tavolo === id && ACTIVE.includes(r.stato) && overlaps(interval(r), iv));
+  }
+  function findTable(list, iso, ora, n, except) {
+    const s = toMin(ora);
+    const iv = [s, s + dur(n)];
+    const fit = TABLES.filter((t) => t.seats >= n).sort((a, b) => a.seats - b.seats || a.id - b.id).find((t) => tableFree(list, iso, t.id, iv, except));
+    return fit ? fit.id : null;
+  }
+  function isPast(iso, ora) { const n = romeNow(); return iso < n.iso || (iso === n.iso && toMin(ora) < n.min); }
+  function nextSlot(list, iso, ora, n, except) {
+    const base = toMin(ora);
+    const cands = slotsFor(iso, svcOfTime(ora)).filter((x) => x !== ora && !isPast(iso, x))
+      .sort((a, b) => Math.abs(toMin(a) - base) - Math.abs(toMin(b) - base) || toMin(a) - toMin(b));
+    for (const c of cands) { const t = findTable(list, iso, c, n, except); if (t) return { ora: c, tavolo: t }; }
+    return null;
+  }
+
+  // Dati dimostrativi: sempre gli stessi per lo stesso giorno, generati intorno a oggi
+  function mulberry32(a) { return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function hashStr(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+  function generate() {
+    const now = romeNow();
+    const list = [];
+    let seq = 1;
+    const plan = { 0: { pranzo: [9, 11], cena: [7, 9] }, 2: { cena: [9, 12] }, 3: { cena: [9, 12] }, 4: { cena: [10, 13] }, 5: { cena: [13, 15] }, 6: { cena: [15, 17] } };
+    for (let i = 0; i < 14; i++) {
+      const iso = addDays(now.iso, i);
+      const day = plan[dow(iso)];
+      if (!day) continue;
+      const rnd = mulberry32(hashStr(iso));
+      const used = new Set();
+      Object.entries(day).forEach(([svc, [lo, hi]]) => {
+        const count = lo + Math.floor(rnd() * (hi - lo + 1));
+        const times = svc === 'pranzo' ? ['12:30', '13:00', '13:00', '13:30'] : ['19:30', '20:00', '20:00', '20:30', '20:30', '20:30', '21:00', '21:00', '21:30'];
+        for (let k = 0; k < count; k++) {
+          const n = [2, 2, 2, 2, 2, 3, 4, 4, 4, 5, 6][Math.floor(rnd() * 11)];
+          let ora = times[Math.floor(rnd() * times.length)];
+          if (!slotsFor(iso, svc).includes(ora)) ora = slotsFor(iso, svc)[0];
+          let tavolo = findTable(list, iso, ora, n);
+          if (!tavolo) {
+            const alt = slotsFor(iso, svc).find((s) => findTable(list, iso, s, n));
+            if (!alt) continue;
+            ora = alt;
+            tavolo = findTable(list, iso, ora, n);
+          }
+          let nome = SURNAMES[Math.floor(rnd() * SURNAMES.length)];
+          for (let g = 0; used.has(nome) && g < 40; g++) nome = SURNAMES[Math.floor(rnd() * SURNAMES.length)];
+          used.add(nome);
+          const f = rnd();
+          list.push({
+            id: seq++, data: iso, ora, persone: n, nome,
+            tel: `3${30 + Math.floor(rnd() * 60)} 000 ${1000 + Math.floor(rnd() * 9000)}`,
+            tavolo, stato: 'confermata', fonte: f < 0.35 ? 'sito' : f < 0.9 ? 'telefono' : 'di persona',
+            note: rnd() < 0.3 ? NOTES[Math.floor(rnd() * NOTES.length)] : '',
+          });
+        }
+      });
+    }
+    // Stati di oggi in base all’ora attuale
+    list.filter((r) => r.data === now.iso).forEach((r) => {
+      const rnd = mulberry32(hashStr(`${r.data}/${r.id}`));
+      const s = toMin(r.ora);
+      const e = s + dur(r.persone);
+      if (now.min >= e) { r.stato = 'conclusa'; r.fine = e - 5 * Math.floor(rnd() * 5); }
+      else if (now.min >= s + 30) r.stato = rnd() < 0.9 ? 'arrivati' : 'non_presentati';
+      else if (now.min >= s + 5) r.stato = rnd() < 0.8 ? 'arrivati' : 'confermata';
+    });
+    // Tre richieste dal sito, scelte per mostrare i tre casi: tavolo libero, altro orario da proporre, serata al completo
+    const open = [];
+    for (let i = 0; i < 14; i++) { const iso = addDays(now.iso, i); if (servicesOf(iso).length) open.push(iso); }
+    const usedDays = new Set();
+    const pick = (n, prefer, want) => {
+      for (const pass of [0, 1]) {
+        for (const iso of open) {
+          if (pass === 0 && usedDays.has(iso)) continue;
+          const slots = [...slotsFor(iso, 'cena')].sort((a, b) => (a === prefer ? -1 : b === prefer ? 1 : 0));
+          for (const ora of slots) {
+            if (iso === now.iso && toMin(ora) < now.min + 60) continue;
+            const t = findTable(list, iso, ora, n);
+            const alt = t ? null : nextSlot(list, iso, ora, n);
+            if ((want === 'libero' && t) || (want === 'pieno' && alt) || (want === 'completo' && !t && !alt)) { usedDays.add(iso); return { data: iso, ora }; }
+          }
+        }
+      }
+      return null;
+    };
+    [
+      { nome: 'Anna Bianchi', persone: 2, note: 'Anniversario', tel: '347 000 2468', prefer: '20:30', want: ['libero'] },
+      { nome: 'Marco Pellacani', persone: 4, note: '', tel: '338 000 1357', prefer: '21:00', want: ['pieno', 'libero'] },
+      { nome: 'Giulia Montanari', persone: 6, note: 'Due bambini, serve un seggiolone', tel: '339 000 8642', prefer: '20:00', want: ['completo', 'pieno', 'libero'] },
+    ].forEach(({ prefer, want, ...q }) => {
+      const where = want.map((w) => pick(q.persone, prefer, w)).find(Boolean) || { data: open[open.length - 1], ora: prefer };
+      list.push({ id: seq++, ...q, ...where, tavolo: null, stato: 'richiesta', fonte: 'sito' });
+    });
+    return { v: 1, day: now.iso, seq, res: list };
+  }
+
+  // Stato
+  let data = store.get(KEY);
+  if (!data || data.v !== 1 || data.day !== romeNow().iso || !Array.isArray(data.res)) { data = generate(); store.set(KEY, data); }
+  const save = () => store.set(KEY, data);
+  const state = { day: '', svc: null, t: 0 };
+  const handled = new Map();
+
+  // Richieste inviate dal sito dimostrativo di Meridiano (stesso dominio, stesso dispositivo)
+  function importInbox() {
+    const inbox = store.get(INBOX);
+    if (!Array.isArray(inbox) || !inbox.length) return [];
+    store.del(INBOX);
+    const added = [];
+    inbox.forEach((q) => {
+      if (!q || !/^\d{4}-\d{2}-\d{2}$/.test(q.data) || !/^\d{2}:\d{2}$/.test(q.ora) || !q.nome) return;
+      const r = {
+        id: data.seq++, data: q.data, ora: q.ora, persone: Math.min(10, Math.max(1, parseInt(q.persone, 10) || 2)),
+        nome: String(q.nome).trim().slice(0, 60), tel: String(q.telefono || '').slice(0, 30), tavolo: null,
+        stato: 'richiesta', fonte: 'sito', note: String(q.note || '').trim().slice(0, 200), nuova: true,
+      };
+      data.res.push(r);
+      added.push(r);
+    });
+    save();
+    return added;
+  }
+
+  const today = () => romeNow().iso;
+  const dayRes = (iso, svc) => data.res.filter((r) => r.data === iso && r.stato !== 'richiesta' && r.stato !== 'annullata' && (!svc || svcOfTime(r.ora) === svc));
+  const coversAt = (iso, svc, t) => dayRes(iso, svc).filter((r) => occupies(r, t)).reduce((s, r) => s + r.persone, 0);
+
+  function defaultT() {
+    const svc = SVC[state.svc];
+    const n = romeNow();
+    if (state.day === n.iso && n.min >= svc.from && n.min <= svc.to) return Math.floor(n.min / 15) * 15;
+    let best = toMin(slotsFor(state.day, state.svc)[1] || '20:00');
+    let max = 0;
+    for (let t = svc.from; t <= svc.to; t += 15) { const c = coversAt(state.day, state.svc, t); if (c > max) { max = c; best = t; } }
+    return best;
+  }
+
+  function setDay(iso, svc) {
+    state.day = iso;
+    const svcs = servicesOf(iso);
+    if (!svcs.length) state.svc = null;
+    else if (svc && svcs.includes(svc)) state.svc = svc;
+    else if (svcs.length === 2) { const n = romeNow(); state.svc = iso === n.iso && n.min >= 960 ? 'cena' : 'pranzo'; }
+    else state.svc = svcs[0];
+    if (state.svc) state.t = defaultT();
+    render();
+  }
+
+  // Disegno statico della sala: sedie e tavoli
+  const tableBox = (t) => (t.shape === 'round' ? [64, 64] : [t.seats === 6 ? 128 : 84, 64]);
+  function buildRoom() {
+    const chairs = [];
+    TABLES.forEach((t) => {
+      if (t.shape === 'round') {
+        chairs.push(`<rect x="${t.x - 51}" y="${t.y - 12}" width="14" height="24" rx="6"/>`, `<rect x="${t.x + 37}" y="${t.y - 12}" width="14" height="24" rx="6"/>`);
+      } else {
+        const xs = t.seats === 6 ? [-40, 0, 40] : [-20, 20];
+        xs.forEach((dx) => chairs.push(`<rect x="${t.x + dx - 12}" y="${t.y - 51}" width="24" height="14" rx="6"/>`, `<rect x="${t.x + dx - 12}" y="${t.y + 37}" width="24" height="14" rx="6"/>`));
+      }
+    });
+    $('[data-chairs]').innerHTML = chairs.join('');
+    $('[data-tables]').innerHTML = TABLES.map((t) => {
+      const [w, h] = tableBox(t);
+      return `<button class="table${t.shape === 'round' ? ' table--round' : ''}" type="button" data-table="${t.id}" style="--x:${t.x};--y:${t.y};--w:${w};--h:${h}"><span class="table__num">${t.id}</span><span class="table__who"></span></button>`;
+    }).join('');
+  }
+
+  // Disegno
+  function render() {
+    renderHeader();
+    renderStrip();
+    renderPlan();
+    renderTimeline();
+    renderList();
+    renderBadge();
+    if ($('[data-dlg-req]').open) renderRequests();
+  }
+
+  function renderHeader() {
+    const t = today();
+    $('[data-day-title]').textContent = cap(dayLong(state.day));
+    $('[data-day-prev]').disabled = state.day <= t;
+    $('[data-day-next]').disabled = diffDays(t, state.day) >= DAYS_AHEAD;
+    $('[data-day-today]').disabled = state.day === t;
+    const two = servicesOf(state.day).length === 2;
+    $('[data-services]').hidden = !two;
+    $$('[data-svc]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.svc === state.svc)));
+  }
+
+  function renderStrip() {
+    const t = today();
+    const start = addDays(t, Math.floor(diffDays(t, state.day) / 7) * 7);
+    const html = [];
+    for (let i = 0; i < 7; i++) {
+      const iso = addDays(start, i);
+      if (diffDays(t, iso) > DAYS_AHEAD) break;
+      const closed = !servicesOf(iso).length;
+      const covers = dayRes(iso).filter((r) => ACTIVE.includes(r.stato)).reduce((s, r) => s + r.persone, 0);
+      const pending = data.res.some((r) => r.data === iso && r.stato === 'richiesta');
+      const name = iso === t ? 'Oggi' : cap(fmt(iso, { weekday: 'short', day: 'numeric' }));
+      html.push(`<button class="day${closed ? ' is-closed' : ''}" type="button" data-goto="${iso}" aria-pressed="${iso === state.day}">
+        <span class="day__name">${name}</span><span class="day__covers">${closed ? 'Chiuso' : `${covers} coperti`}</span>${pending ? '<span class="day__dot" aria-label="Richieste da gestire"></span>' : ''}</button>`);
+    }
+    $('[data-strip]').innerHTML = html.join('');
+  }
+
+  function renderPlan() {
+    const closed = !state.svc;
+    $('[data-closed]').hidden = !closed;
+    $('[data-closed]').textContent = 'Il lunedì Meridiano è chiuso.';
+    $('[data-plan-time]').textContent = closed ? '—' : hhmm(state.t);
+    const n = romeNow();
+    $('[data-now-tag]').hidden = closed || !(state.day === n.iso && Math.floor(n.min / 15) * 15 === state.t);
+    const list = closed ? [] : dayRes(state.day, state.svc);
+    TABLES.forEach((tb) => {
+      const btn = $(`[data-table="${tb.id}"]`);
+      const who = btn.querySelector('.table__who');
+      btn.disabled = closed;
+      btn.classList.remove('is-booked', 'is-seated');
+      btn.dataset.res = '';
+      if (closed) { who.textContent = ''; btn.setAttribute('aria-label', `Tavolo ${tb.id}, ${tb.seats} posti`); return; }
+      const r = list.find((x) => x.tavolo === tb.id && occupies(x, state.t));
+      if (r) {
+        const seated = r.stato === 'arrivati' || r.stato === 'conclusa';
+        btn.classList.add(seated ? 'is-seated' : 'is-booked');
+        btn.dataset.res = r.id;
+        who.textContent = `${r.nome.split(' ').slice(-1)[0]}, ${r.persone}`;
+        btn.setAttribute('aria-label', `Tavolo ${tb.id}, ${tb.seats} posti: ${r.nome}, ${persone(r.persone)}, dalle ${r.ora}, ${seated ? 'seduti' : 'prenotato'}`);
+      } else {
+        const next = list.filter((x) => x.tavolo === tb.id && x.stato === 'confermata' && toMin(x.ora) > state.t).sort((a, b) => toMin(a.ora) - toMin(b.ora))[0];
+        who.textContent = next ? `fino ${next.ora}` : 'libero';
+        btn.setAttribute('aria-label', `Tavolo ${tb.id}, ${tb.seats} posti, libero${next ? ` fino alle ${next.ora}` : ''}. Nuova prenotazione`);
+      }
+    });
+  }
+
+  function renderTimeline() {
+    const box = $('[data-timeline]');
+    box.hidden = !state.svc;
+    if (!state.svc) return;
+    const svc = SVC[state.svc];
+    const range = $('[data-range]');
+    range.min = svc.from; range.max = svc.to; range.step = 15; range.value = state.t;
+    range.setAttribute('aria-valuetext', hhmm(state.t));
+    const steps = (svc.to - svc.from) / 15;
+    const pos = (t) => `calc(var(--thumb) / 2 + (100% - var(--thumb)) * ${(t - svc.from) / (svc.to - svc.from)})`;
+    const bars = [];
+    for (let t = svc.from; t <= svc.to; t += 15) {
+      const c = coversAt(state.day, state.svc, t);
+      bars.push(`<span class="timeline__bar${t === state.t ? ' is-current' : ''}" style="left:${pos(t)};--bw:calc((100% - var(--thumb)) / ${steps} - 3px);--bh:${Math.min(100, (c / CAP) * 100)}%"></span>`);
+    }
+    const n = romeNow();
+    if (state.day === n.iso && n.min >= svc.from && n.min <= svc.to) bars.push(`<span class="timeline__now" style="left:${pos(n.min)}"><span>adesso</span></span>`);
+    $('[data-bars]').innerHTML = bars.join('');
+    const ticks = [];
+    for (let h = Math.ceil(svc.from / 60) * 60; h <= svc.to; h += 60) ticks.push(`<span style="left:${pos(h)}">${h / 60}</span>`);
+    $('[data-ticks]').innerHTML = ticks.join('');
+  }
+
+  function renderList() {
+    const listEl = $('[data-list]');
+    const statsEl = $('[data-stats]');
+    const warnEl = $('[data-unassigned]');
+    if (!state.svc) {
+      $('[data-list-title]').textContent = 'Chiuso';
+      statsEl.textContent = 'Il lunedì non ci sono servizi.';
+      warnEl.hidden = true;
+      listEl.innerHTML = '';
+      return;
+    }
+    const svc = SVC[state.svc];
+    $('[data-list-title]').textContent = svc.label;
+    const list = dayRes(state.day, state.svc).sort((a, b) => toMin(a.ora) - toMin(b.ora) || (a.tavolo || 99) - (b.tavolo || 99));
+    const covers = list.filter((r) => ACTIVE.includes(r.stato)).reduce((s, r) => s + r.persone, 0);
+    let peak = 0;
+    let peakT = svc.from;
+    for (let t = svc.from; t <= svc.to; t += 15) { const c = coversAt(state.day, state.svc, t); if (c > peak) { peak = c; peakT = t; } }
+    statsEl.innerHTML = list.length
+      ? `<strong>${covers} coperti</strong> in ${list.length} prenotazioni. Il momento più pieno è alle ${hhmm(peakT)}, con ${peak} persone su ${CAP} posti.`
+      : 'Nessuna prenotazione per questo servizio.';
+    const unassigned = list.filter((r) => r.tavolo == null && r.stato === 'confermata').length;
+    warnEl.hidden = !unassigned;
+    warnEl.textContent = unassigned === 1 ? '1 prenotazione è ancora senza tavolo.' : `${unassigned} prenotazioni sono ancora senza tavolo.`;
+    const n = romeNow();
+    const groups = new Map();
+    list.forEach((r) => { if (!groups.has(r.ora)) groups.set(r.ora, []); groups.get(r.ora).push(r); });
+    listEl.innerHTML = [...groups].map(([ora, rs]) => `<section class="slot"><h3 class="slot__time">${ora}</h3><ul>${rs.map((r) => {
+      const late = r.stato === 'confermata' && r.data === n.iso && n.min >= toMin(r.ora) + 15;
+      let actions = '';
+      if (r.stato === 'confermata') actions = `${late ? '<span class="pill pill--late">In ritardo</span>' : ''}<button class="btn btn--s" type="button" data-act="arrivati" data-id="${r.id}">Arrivati</button><button class="btn btn--ghost btn--s" type="button" data-act="non_presentati" data-id="${r.id}">Non presentati</button>`;
+      else if (r.stato === 'arrivati') actions = `<span class="pill pill--seated">Seduti</span><button class="btn btn--ghost btn--s" type="button" data-act="conclusa" data-id="${r.id}">Conto chiuso</button>`;
+      else if (r.stato === 'conclusa') actions = `<span class="pill pill--done">Andati via alle ${hhmm(r.fine)}</span>`;
+      else if (r.stato === 'non_presentati') actions = `<span class="pill pill--noshow">Non presentati</span><button class="btn btn--ghost btn--s" type="button" data-act="arrivati" data-id="${r.id}">Sono arrivati</button>`;
+      const where = r.tavolo == null ? 'senza tavolo' : `tavolo ${r.tavolo}`;
+      return `<li class="res" data-row="${r.id}" data-table-ref="${r.tavolo || ''}">
+        <button class="res__main" type="button" data-edit="${r.id}">
+          <span class="res__name">${esc(r.nome)}</span>
+          <span class="res__meta">${persone(r.persone)}, ${where}${r.fonte === 'sito' ? ', dal sito' : ''}</span>
+          ${r.note ? `<span class="res__note">${esc(r.note)}</span>` : ''}
+        </button>
+        <div class="res__actions">${actions}</div>
+      </li>`;
+    }).join('')}</ul></section>`).join('');
+  }
+
+  function renderBadge() {
+    const n = data.res.filter((r) => r.stato === 'richiesta').length;
+    const b = $('[data-req-count]');
+    b.textContent = n;
+    b.classList.toggle('is-zero', n === 0);
+    b.setAttribute('aria-label', `${n} da gestire`);
+  }
+
+  // Messaggi pronti per il cliente
+  const msg = {
+    conferma: (r) => `Ciao ${firstName(r.nome)}, ti confermiamo il tavolo per ${persone(r.persone)} ${dayLong(r.data)} alle ${r.ora}. A presto!\nMeridiano`,
+    proposta: (r, alt) => `Ciao ${firstName(r.nome)}, ${dayLong(r.data)} alle ${r.ora} siamo al completo. Possiamo accoglier${r.persone > 1 ? 'vi' : 'ti'} alle ${alt}: ti va bene? Rispondi pure a questo messaggio.\nMeridiano`,
+    rifiuto: (r) => `Ciao ${firstName(r.nome)}, ci dispiace: ${dayLong(r.data)} siamo al completo. Speriamo di vederti presto da noi.\nMeridiano`,
+  };
+
+  function renderRequests() {
+    const pending = data.res.filter((r) => r.stato === 'richiesta').sort((a, b) => (b.nuova ? 1 : 0) - (a.nuova ? 1 : 0) || (a.data + a.ora).localeCompare(b.data + b.ora));
+    const done = [...handled.entries()].filter(([id]) => !pending.some((r) => r.id === id));
+    const cards = pending.map((r) => {
+      const h = handled.get(r.id);
+      const head = `<div class="req__head"><h3 class="req__name">${esc(r.nome)}</h3>${r.nuova ? '<span class="pill pill--new">Nuova</span>' : ''}</div>
+        <p class="req__when">${cap(dayLong(r.data))}, ${r.ora}, ${persone(r.persone)}${r.tel ? `, ${esc(r.tel)}` : ''}</p>
+        ${r.note ? `<p class="req__note">${esc(r.note)}</p>` : ''}`;
+      if (r.proposta) {
+        return `<article class="req">${head}<p class="req__status">Hai proposto le ${r.proposta}: aspetti la risposta del cliente.</p>
+          ${h ? `<p class="msg">${esc(h.text)}</p><button class="btn btn--ghost btn--s" type="button" data-copy="${r.id}">Copia il messaggio</button>` : ''}
+          <div class="req__actions"><button class="btn btn--s" type="button" data-req="accetta" data-id="${r.id}">Ha accettato</button><button class="btn btn--ghost btn--s" type="button" data-req="rifiutata" data-id="${r.id}">Ha rifiutato</button></div></article>`;
+      }
+      const past = isPast(r.data, r.ora);
+      const t = past ? null : findTable(data.res, r.data, r.ora, r.persone, r.id);
+      const alt = t || past ? null : nextSlot(data.res, r.data, r.ora, r.persone, r.id);
+      const status = past ? 'L’orario richiesto è già passato.'
+        : t ? `Il tavolo ${t} è libero alle ${r.ora}.`
+        : alt ? `Alle ${r.ora} siamo al completo. Alle ${alt.ora} è libero il tavolo ${alt.tavolo}.`
+        : r.persone > 6 ? 'Nessun tavolo ha abbastanza posti: serve unire due tavoli.' : 'Siamo al completo per tutto il servizio.';
+      return `<article class="req">${head}<p class="req__status">${status}</p><div class="req__actions">
+        ${t ? `<button class="btn btn--s" type="button" data-req="conferma" data-id="${r.id}" data-tavolo="${t}">Conferma il tavolo ${t}</button>` : ''}
+        ${alt ? `<button class="btn btn--s" type="button" data-req="proponi" data-id="${r.id}" data-ora="${alt.ora}">Proponi le ${alt.ora}</button>` : ''}
+        <button class="btn btn--ghost btn--s" type="button" data-req="rifiuta" data-id="${r.id}">Rifiuta</button></div></article>`;
+    });
+    done.forEach(([id, h]) => {
+      cards.push(`<article class="req"><div class="req__head"><h3 class="req__name">${esc(h.nome)}</h3></div><p class="req__status">${esc(h.summary)}</p>
+        <p class="msg">${esc(h.text)}</p><button class="btn btn--ghost btn--s" type="button" data-copy="${id}">Copia il messaggio</button></article>`);
+    });
+    $('[data-req-list]').innerHTML = cards.length ? cards.join('')
+      : '<p class="empty">Nessuna richiesta da gestire. Quando un cliente prenota dal sito, la richiesta arriva qui. <a href="../#prenota">Prova a prenotare dal sito</a>.</p>';
+  }
+
+  // Finestra della prenotazione
+  const dlgRes = $('[data-dlg-res]');
+  const form = $('[data-res-form]');
+  let editing = null;
+
+  function fillOra(keep) {
+    const iso = form.elements.data.value;
+    const sel = form.elements.ora;
+    const prev = keep || sel.value;
+    const svcs = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? servicesOf(iso) : [];
+    if (!svcs.length) { sel.innerHTML = '<option value="">Chiuso</option>'; return; }
+    sel.innerHTML = svcs.map((s) => `<optgroup label="${SVC[s].label}">${slotsFor(iso, s).map((o) => `<option value="${o}">${o}</option>`).join('')}</optgroup>`).join('');
+    const all = svcs.flatMap((s) => slotsFor(iso, s));
+    sel.value = all.includes(prev) ? prev : all.find((o) => !isPast(iso, o)) || all[0];
+  }
+
+  function fillTavolo(keep) {
+    const f = form.elements;
+    const sel = f.tavolo;
+    const prev = keep !== undefined ? keep : sel.value;
+    const iso = f.data.value;
+    const n = Number(f.persone.value);
+    const hint = $('[data-table-hint]');
+    if (!f.ora.value) { sel.innerHTML = '<option value="">Nessun tavolo</option>'; hint.textContent = ''; return; }
+    const s = toMin(f.ora.value);
+    const iv = [s, s + dur(n)];
+    const ex = editing ? editing.id : -1;
+    const auto = findTable(data.res, iso, f.ora.value, n, ex);
+    const opts = [`<option value="auto">${auto ? `Assegna in automatico (tavolo ${auto})` : 'Assegna in automatico'}</option>`, '<option value="">Scegli dopo</option>'];
+    TABLES.forEach((t) => {
+      const free = tableFree(data.res, iso, t.id, iv, ex);
+      const small = t.seats < n;
+      const why = !free ? ', occupato' : small ? ', troppo piccolo' : '';
+      opts.push(`<option value="${t.id}"${!free || small ? ' disabled' : ''}>Tavolo ${t.id}, ${t.seats} posti${why}</option>`);
+    });
+    sel.innerHTML = opts.join('');
+    const prevOpt = [...sel.options].find((o) => o.value === String(prev) && !o.disabled);
+    sel.value = prevOpt ? prevOpt.value : 'auto';
+    hint.textContent = auto ? '' : n > 6 ? 'Nessun tavolo ha abbastanza posti: puoi salvarla senza tavolo e unire due tavoli in sala.' : 'A quest’ora i tavoli adatti sono tutti occupati: puoi salvarla senza tavolo.';
+  }
+
+  function openRes(r, prefill = {}) {
+    editing = r || null;
+    const f = form.elements;
+    const base = r || { nome: '', tel: '', data: state.day, ora: '', persone: 2, tavolo: null, fonte: 'telefono', note: '', ...prefill };
+    $('[data-res-title]').textContent = r ? r.nome : 'Nuova prenotazione';
+    f.nome.value = base.nome;
+    f.tel.value = base.tel || '';
+    f.data.min = today();
+    f.data.max = addDays(today(), DAYS_AHEAD);
+    f.data.value = base.data;
+    f.persone.value = String(base.persone);
+    f.fonte.value = base.fonte || 'telefono';
+    f.note.value = base.note || '';
+    fillOra(base.ora);
+    fillTavolo(base.tavolo == null ? (r ? '' : 'auto') : String(base.tavolo));
+    const err = $('[data-res-error]');
+    err.hidden = true;
+    const del = $('[data-res-cancel]');
+    del.hidden = !r;
+    del.classList.remove('is-armed');
+    del.textContent = 'Annulla la prenotazione';
+    dlgRes.showModal();
+    if (!r) f.nome.focus();
+  }
+
+  form.addEventListener('change', (e) => {
+    if (e.target.name === 'data') { fillOra(); fillTavolo(); }
+    if (e.target.name === 'ora' || e.target.name === 'persone') fillTavolo();
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = form.elements;
+    const err = $('[data-res-error]');
+    const fail = (text, el) => { err.textContent = text; err.hidden = false; if (el) el.focus(); };
+    if (!f.nome.value.trim()) return fail('Scrivi il nome di chi prenota.', f.nome);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(f.data.value) || f.data.value < today()) return fail('Scegli un giorno da oggi in avanti.', f.data);
+    if (!f.ora.value) return fail('Quel giorno Meridiano è chiuso: scegli un altro giorno.', f.data);
+    const n = Number(f.persone.value);
+    const ex = editing ? editing.id : -1;
+    let tavolo = f.tavolo.value === 'auto' ? findTable(data.res, f.data.value, f.ora.value, n, ex) : f.tavolo.value ? Number(f.tavolo.value) : null;
+    if (tavolo != null) {
+      const s = toMin(f.ora.value);
+      const t = TABLES.find((x) => x.id === tavolo);
+      if (t.seats < n) return fail(`Il tavolo ${tavolo} ha ${t.seats} posti: scegline uno più grande.`, f.tavolo);
+      if (!tableFree(data.res, f.data.value, tavolo, [s, s + dur(n)], ex)) return fail(`Il tavolo ${tavolo} a quell’ora è occupato.`, f.tavolo);
+    }
+    const fields = { nome: f.nome.value.trim(), tel: f.tel.value.trim(), data: f.data.value, ora: f.ora.value, persone: n, tavolo, fonte: f.fonte.value, note: f.note.value.trim() };
+    let r = editing;
+    if (r) {
+      Object.assign(r, fields);
+      if (r.stato === 'richiesta') { r.stato = 'confermata'; delete r.proposta; delete r.nuova; }
+      if (r.stato === 'conclusa' && r.fine <= toMin(r.ora)) delete r.fine;
+    } else {
+      r = { id: data.seq++, ...fields, stato: 'confermata' };
+      data.res.push(r);
+    }
+    save();
+    dlgRes.close();
+    toast(tavolo ? `Salvata: ${r.nome}, tavolo ${tavolo}` : `Salvata: ${r.nome}, ancora senza tavolo`);
+    state.day = r.data;
+    state.svc = svcOfTime(r.ora);
+    state.t = toMin(r.ora);
+    render();
+  });
+
+  $('[data-res-cancel]').addEventListener('click', (e) => {
+    const b = e.currentTarget;
+    if (!b.classList.contains('is-armed')) { b.classList.add('is-armed'); b.textContent = 'Sì, annullala'; return; }
+    editing.stato = 'annullata';
+    save();
+    dlgRes.close();
+    toast(`Annullata la prenotazione di ${editing.nome}`);
+    render();
+  });
+
+  // Finestra delle richieste
+  const dlgReq = $('[data-dlg-req]');
+  function openRequests() { renderRequests(); dlgReq.showModal(); }
+  dlgReq.addEventListener('close', () => {
+    handled.clear();
+    data.res.forEach((r) => { delete r.nuova; });
+    save();
+  });
+
+  $('[data-req-list]').addEventListener('click', async (e) => {
+    const copyBtn = e.target.closest('[data-copy]');
+    if (copyBtn) {
+      const h = handled.get(Number(copyBtn.dataset.copy));
+      if (h) toast((await copyText(h.text)) ? 'Messaggio copiato' : 'Non riesco a copiare: seleziona il testo a mano');
+      return;
+    }
+    const b = e.target.closest('[data-req]');
+    if (!b) return;
+    const r = data.res.find((x) => x.id === Number(b.dataset.id));
+    if (!r) return;
+    const act = b.dataset.req;
+    if (act === 'conferma') {
+      r.tavolo = Number(b.dataset.tavolo);
+      r.stato = 'confermata';
+      handled.set(r.id, { nome: r.nome, summary: `Confermata: tavolo ${r.tavolo}, ${dayLong(r.data)} alle ${r.ora}.`, text: msg.conferma(r) });
+      toast(`Confermata: ${r.nome}, tavolo ${r.tavolo}`);
+    } else if (act === 'proponi') {
+      r.proposta = b.dataset.ora;
+      handled.set(r.id, { nome: r.nome, summary: '', text: msg.proposta(r, r.proposta) });
+    } else if (act === 'accetta') {
+      r.ora = r.proposta;
+      delete r.proposta;
+      r.tavolo = findTable(data.res, r.data, r.ora, r.persone, r.id);
+      r.stato = 'confermata';
+      handled.set(r.id, { nome: r.nome, summary: `Confermata alle ${r.ora}${r.tavolo ? `, tavolo ${r.tavolo}` : ', ancora senza tavolo'}.`, text: msg.conferma(r) });
+      toast(`Confermata: ${r.nome} alle ${r.ora}`);
+    } else if (act === 'rifiuta' || act === 'rifiutata') {
+      r.stato = 'annullata';
+      handled.set(r.id, { nome: r.nome, summary: act === 'rifiuta' ? 'Richiesta rifiutata.' : 'Il cliente ha rifiutato la proposta.', text: msg.rifiuto(r) });
+    }
+    save();
+    render();
+  });
+
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; } catch { /* prova il metodo classico */ }
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.append(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch { ok = false; }
+    ta.remove();
+    return ok;
+  }
+
+  let toastTimer = 0;
+  function toast(text) {
+    const el = $('[data-toast]');
+    el.textContent = text;
+    el.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('is-on'), 2600);
+  }
+
+  // Interazioni
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-close]')) { e.target.closest('dialog').close(); return; }
+    const go = e.target.closest('[data-goto]');
+    if (go) { setDay(go.dataset.goto, state.svc); return; }
+    const svcBtn = e.target.closest('[data-svc]');
+    if (svcBtn) { state.svc = svcBtn.dataset.svc; state.t = defaultT(); render(); return; }
+    const table = e.target.closest('[data-table]');
+    if (table && !table.disabled) {
+      const r = data.res.find((x) => x.id === Number(table.dataset.res));
+      if (r) openRes(r);
+      else {
+        const slots = slotsFor(state.day, state.svc);
+        const ora = slots.find((s) => toMin(s) >= state.t && !isPast(state.day, s)) || slots.find((s) => !isPast(state.day, s)) || slots[slots.length - 1];
+        openRes(null, { tavolo: Number(table.dataset.table), ora, data: state.day });
+      }
+      return;
+    }
+    const edit = e.target.closest('[data-edit]');
+    if (edit) { openRes(data.res.find((x) => x.id === Number(edit.dataset.edit))); return; }
+    const act = e.target.closest('[data-act]');
+    if (act) {
+      const r = data.res.find((x) => x.id === Number(act.dataset.id));
+      if (!r) return;
+      const to = act.dataset.act;
+      if (to === 'conclusa') {
+        const n = romeNow();
+        const at = r.data === n.iso ? n.min : state.t;
+        r.fine = Math.max(toMin(r.ora) + 15, at);
+      } else delete r.fine;
+      r.stato = to;
+      save();
+      toast(to === 'arrivati' ? `${r.nome}: seduti al tavolo ${r.tavolo || ''}`.trim() : to === 'conclusa' ? `${r.nome}: tavolo ${r.tavolo || ''} libero`.trim() : to === 'non_presentati' ? `${r.nome}: non presentati` : `${r.nome}: di nuovo in attesa`);
+      render();
+    }
+  });
+
+  // Passando su una prenotazione si illumina il suo tavolo
+  const hint = (id, on) => { const b = id && $(`[data-table="${id}"]`); if (b) b.classList.toggle('is-hint', on); };
+  $('[data-list]').addEventListener('pointerover', (e) => { const row = e.target.closest('[data-row]'); if (row) hint(row.dataset.tableRef, true); });
+  $('[data-list]').addEventListener('pointerout', (e) => { const row = e.target.closest('[data-row]'); if (row) hint(row.dataset.tableRef, false); });
+  $('[data-list]').addEventListener('focusin', (e) => { const row = e.target.closest('[data-row]'); if (row) hint(row.dataset.tableRef, true); });
+  $('[data-list]').addEventListener('focusout', (e) => { const row = e.target.closest('[data-row]'); if (row) hint(row.dataset.tableRef, false); });
+
+  $('[data-range]').addEventListener('input', (e) => { state.t = Number(e.target.value); renderPlan(); renderTimeline(); });
+  $('[data-day-prev]').addEventListener('click', () => setDay(addDays(state.day, -1), state.svc));
+  $('[data-day-next]').addEventListener('click', () => setDay(addDays(state.day, 1), state.svc));
+  $('[data-day-today]').addEventListener('click', () => setDay(today()));
+  $('[data-new]').addEventListener('click', () => openRes(null));
+  $('[data-open-requests]').addEventListener('click', openRequests);
+  $('[data-reset]').addEventListener('click', (e) => {
+    const b = e.currentTarget;
+    if (!b.dataset.armed) { b.dataset.armed = '1'; b.textContent = 'Sicuro? Tocca di nuovo per ripristinare'; setTimeout(() => { delete b.dataset.armed; b.textContent = 'Ripristina i dati dimostrativi'; }, 4000); return; }
+    data = generate();
+    save();
+    delete b.dataset.armed;
+    b.textContent = 'Ripristina i dati dimostrativi';
+    handled.clear();
+    toast('Dati dimostrativi ripristinati');
+    setDay(firstOpen());
+  });
+
+  function firstOpen() { let iso = today(); for (let i = 0; i < 7 && !servicesOf(iso).length; i++) iso = addDays(iso, 1); return iso; }
+
+  function checkInbox(openDialog) {
+    const added = importInbox();
+    if (!added.length) return;
+    render();
+    toast(added.length === 1 ? `Nuova richiesta dal sito: ${added[0].nome}` : `${added.length} nuove richieste dal sito`);
+    if (openDialog && !dlgReq.open && !dlgRes.open) openRequests();
+  }
+
+  buildRoom();
+  setDay(firstOpen());
+  checkInbox(true);
+  window.addEventListener('focus', () => checkInbox(false));
+  window.addEventListener('storage', (e) => { if (e.key === INBOX) checkInbox(false); });
+  setInterval(() => { if (!dlgRes.open) { renderList(); renderTimeline(); renderPlan(); } }, 60000);
+})();
+</script>
+</body>
+</html>

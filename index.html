@@ -85,8 +85,8 @@ ul{padding:0;list-style:none}
 .hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;margin-top:2.25rem}
 .hero__photo{grid-area:1/2;position:relative;min-height:24rem;overflow:hidden}
 .hero__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
-.hero__photo::after{content:"";position:absolute;inset:auto 0 0;height:32%;background:linear-gradient(to top,rgba(31,20,14,.78),rgba(31,20,14,0))}
-.hero__photo figcaption{position:absolute;z-index:1;left:1.5rem;right:1.5rem;bottom:1.25rem;color:var(--farina);font-size:.9375rem;font-style:italic}
+.hero__photo::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(to top,rgba(31,20,14,.86),rgba(31,20,14,.55) 45%,rgba(31,20,14,0))}
+.hero__photo figcaption{position:absolute;z-index:1;left:1.5rem;right:1.5rem;bottom:1.25rem;color:var(--farina);font-size:.9375rem;font-style:italic;text-shadow:0 1px 10px rgba(31,20,14,.7)}
 
 /* La meridiana: la giornata di oggi, con il punto che segna l'ora attuale */
 .meridian{grid-area:2/1/3/3;padding:1.6rem var(--gutter) 2rem}
@@ -279,8 +279,8 @@ ul{padding:0;list-style:none}
       </div>
     </div>
     <figure class="hero__photo">
-      <img src="assets/img/piatto.jpg" width="1376" height="768" fetchpriority="high" alt="Filetto di salmerino scottato su crema di zucca, con germogli e gocce di olio alle erbe, in un piatto di ceramica">
-      <figcaption>Salmerino alpino, crema di zucca, olio alle erbe.</figcaption>
+      <img src="assets/img/piatto.jpg" width="1376" height="768" fetchpriority="high" alt="Filetto di trota salmonata scottato su crema di zucca, con germogli e gocce di olio alle erbe, in un piatto di ceramica">
+      <figcaption>Trota salmonata dell’Appennino, crema di zucca, olio alle erbe.</figcaption>
     </figure>
     <div class="meridian">
       <div class="meridian__head">
@@ -356,7 +356,7 @@ ul{padding:0;list-style:none}
           <div class="course">
             <h3 class="course__name">Secondi</h3>
             <ul>
-              <li class="dish"><p class="dish__row"><span class="dish__name">Salmerino alpino</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">26<span class="sr-only"> euro</span></span></p><p class="dish__desc">Crema di zucca, olio alle erbe, germogli.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Trota salmonata dell’Appennino</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">26<span class="sr-only"> euro</span></span></p><p class="dish__desc">Crema di zucca, olio alle erbe, germogli.</p></li>
               <li class="dish"><p class="dish__row"><span class="dish__name">Guancia di manzo al Lambrusco</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">26<span class="sr-only"> euro</span></span></p><p class="dish__desc">Otto ore di cottura, purè di patate affumicato.</p></li>
               <li class="dish"><p class="dish__row"><span class="dish__name">Cotechino di Modena</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">20<span class="sr-only"> euro</span></span></p><p class="dish__desc">Lenticchie in umido, zabaione salato.</p></li>
             </ul>

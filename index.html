@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridiano, cucina emiliana a Modena</title>
+<meta name="description" content="Meridiano è un ristorante immaginario di cucina emiliana nel centro di Modena. Sito dimostrativo con menu, orari in tempo reale e prenotazione online.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2B1B13">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Meridiano, cucina emiliana a Modena">
+<meta property="og:description" content="Sito dimostrativo di un ristorante immaginario: menu, orari in tempo reale e prenotazione online.">
+<meta property="og:url" content="https://frnc1.github.io/meridiano/">
+<meta property="og:image" content="https://frnc1.github.io/meridiano/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="La pagina iniziale del sito Meridiano: il nome del ristorante e la foto di un piatto">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232B1B13'/%3E%3Cpath d='M8 42h48' stroke='%23F2ECDF' stroke-opacity='.55' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='42' r='10' fill='%23E8B84E'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/bodoni-moda.woff" as="font" type="font/woff" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* Bodoni Moda: carattere di Giambattista Bodoni, tipografo a Parma. Font ospitato in locale: niente richieste a server esterni. */
+@font-face{font-family:"Bodoni Moda";src:url("assets/fonts/bodoni-moda.woff") format("woff");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Bodoni Moda";src:url("assets/fonts/bodoni-moda-italic.woff") format("woff");font-weight:400 900;font-style:italic;font-display:swap}
+
+/* Colori della tavola modenese */
+:root{
+  --sfoglia:#E8B84E;
+  --sfoglia-chiara:#F1CB6F;
+  --lambrusco:#4B1D30;
+  --balsamico:#2B1B13;
+  --notte:#1F140E;
+  --farina:#F2ECDF;
+  --farina-70:rgba(242,236,223,.72);
+  --farina-40:rgba(242,236,223,.4);
+  --farina-16:rgba(242,236,223,.16);
+  --balsamico-78:rgba(43,27,19,.8);
+  --errore:#F0957A;
+  --serif:"Bodoni Moda","Bodoni 72","Bodoni MT",Didot,Georgia,serif;
+  --gutter:clamp(1.25rem,5vw,5rem);
+  --bar:4.75rem;
+  --time-col:clamp(8rem,13vw,12.5rem);
+  --ease:cubic-bezier(.22,.7,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:var(--bar)}
+body{margin:0;background:var(--balsamico);color:var(--farina);font-family:var(--serif);font-size:1.125rem;line-height:1.6;font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,p,ul,dl,dd,figure{margin:0}
+h1,h2,h3{font-weight:400}
+ul{padding:0;list-style:none}
+::selection{background:var(--sfoglia);color:var(--balsamico)}
+:focus-visible{outline:2px solid var(--sfoglia);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:var(--gutter);top:-4rem;z-index:60;padding:.6rem 1.1rem;border-radius:999px;background:var(--sfoglia);color:var(--balsamico);text-decoration:none}
+.skip:focus{top:.9rem}
+
+/* Pulsanti e link */
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:3.25rem;padding:0 1.65rem;border:0;border-radius:999px;background:var(--sfoglia);color:var(--balsamico);font:500 1.0625rem/1 var(--serif);text-decoration:none;cursor:pointer;transition:background-color .25s}
+.button:hover{background:var(--sfoglia-chiara)}
+.button:active{transform:translateY(1px)}
+.button--small{min-height:2.6rem;padding:0 1.15rem;font-size:1rem}
+.button--wide{width:100%;margin-top:.5rem}
+.textlink{padding:0;border:0;background:none;color:var(--farina);font:inherit;font-size:1.0625rem;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em;cursor:pointer;transition:text-decoration-color .2s}
+.textlink:hover{text-decoration-color:var(--sfoglia)}
+
+/* Barra in alto */
+.bar{position:fixed;inset:0 0 auto;z-index:40;display:flex;align-items:center;gap:clamp(1rem,2.4vw,2.25rem);height:var(--bar);padding:0 var(--gutter);background:var(--balsamico)}
+.bar__brand{margin-right:auto;font-size:1.625rem;line-height:1;letter-spacing:.01em;text-decoration:none}
+.bar__nav{display:flex;gap:clamp(1rem,2.4vw,2rem)}
+.bar__link{color:var(--farina-70);font-size:1.0625rem;text-decoration:none;transition:color .2s}
+.bar__link:hover{color:var(--farina)}
+
+/* Apertura */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);grid-template-rows:minmax(0,1fr) auto;min-height:100vh;min-height:100svh;padding-top:var(--bar)}
+.hero__text{grid-area:1/1;align-self:center;padding:clamp(2rem,5vh,4rem) clamp(1.5rem,3vw,3.5rem) clamp(2rem,5vh,4rem) var(--gutter)}
+.hero__title{margin-left:-.04em;font-size:clamp(4rem,8.6vw,9rem);line-height:.9;letter-spacing:-.015em}
+.hero__lead{margin-top:1.5rem;text-wrap:balance;font-size:clamp(1.5rem,2.1vw,1.875rem);line-height:1.25}
+.hero__body{max-width:29em;margin-top:1.25rem;color:var(--farina-70)}
+.hero__actions{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;margin-top:2.25rem}
+.hero__photo{grid-area:1/2;position:relative;min-height:24rem;overflow:hidden}
+.hero__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+.hero__photo::after{content:"";position:absolute;inset:auto 0 0;height:32%;background:linear-gradient(to top,rgba(31,20,14,.78),rgba(31,20,14,0))}
+.hero__photo figcaption{position:absolute;z-index:1;left:1.5rem;right:1.5rem;bottom:1.25rem;color:var(--farina);font-size:.9375rem;font-style:italic}
+
+/* La meridiana: la giornata di oggi, con il punto che segna l'ora attuale */
+.meridian{grid-area:2/1/3/3;padding:1.6rem var(--gutter) 2rem}
+.meridian__head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.25rem 2rem}
+.meridian__today{color:var(--farina-70);font-size:.9375rem;font-style:italic}
+.meridian__status{font-size:1.25rem}
+.meridian__scale{--y:3.4rem;position:relative;height:5.2rem;margin-top:.4rem}
+.meridian__line{position:absolute;top:var(--y);left:0;right:0;height:1px;background:var(--farina-40);transform-origin:left center}
+.meridian__tick{position:absolute;top:calc(var(--y) - 4px);width:1px;height:9px;background:var(--farina-40)}
+.meridian__tick.is-major{top:calc(var(--y) - 7px);height:15px;background:var(--farina-70)}
+.meridian__tick[data-label]::after{content:attr(data-label);position:absolute;top:1.2rem;left:0;transform:translateX(-50%);color:var(--farina-70);font-size:.875rem;line-height:1}
+.meridian__band,.meridian__mark{position:absolute;top:calc(var(--y) - 3px);height:7px}
+.meridian__band::before{content:"";position:absolute;inset:0;border-radius:4px;background:var(--sfoglia);transform-origin:left center}
+.meridian__band--banco{top:calc(var(--y) - 1px);height:3px}
+.meridian__band--banco::before{background:rgba(232,184,78,.5)}
+.meridian__mark{width:7px;border-radius:50%;background:var(--sfoglia)}
+.meridian__label{position:absolute;bottom:calc(100% + .55rem);left:0;color:var(--farina);font-size:.9375rem;font-style:italic;line-height:1;white-space:nowrap}
+.meridian__band--banco .meridian__label{bottom:calc(100% + .75rem);color:var(--farina-70)}
+.meridian__closed{position:absolute;top:calc(var(--y) - 1.75rem);left:50%;transform:translateX(-50%);color:var(--farina-70);font-style:italic;white-space:nowrap}
+.meridian__now{position:absolute;top:0;bottom:calc(100% - var(--y));width:0}
+.meridian__now::before{content:"";position:absolute;top:1.4rem;bottom:0;left:-.5px;width:1px;background:linear-gradient(to bottom,rgba(242,236,223,0),var(--farina))}
+.meridian__now::after{content:"";position:absolute;bottom:-6px;left:-6px;width:12px;height:12px;border-radius:50%;background:var(--farina);box-shadow:0 0 0 4px rgba(242,236,223,.14),0 0 22px 6px rgba(232,184,78,.38)}
+.meridian__now .meridian__label{top:0;bottom:auto;transform:translateX(-50%)}
+.meridian__now.is-start .meridian__label{transform:none}
+.meridian__now.is-end .meridian__label{transform:translateX(-100%)}
+
+/* Le ore della giornata */
+.day{padding:clamp(5rem,10vw,8.5rem) var(--gutter)}
+.day__inner{display:grid;grid-template-columns:var(--time-col) minmax(0,1fr);align-items:baseline;gap:clamp(1.5rem,3vw,3rem);max-width:84rem;margin:0 auto}
+.day__time{font-size:clamp(2.75rem,5vw,4.5rem);line-height:1;letter-spacing:-.01em}
+.day__title{max-width:16em;text-wrap:balance;font-size:clamp(2.5rem,4.6vw,4.25rem);line-height:1.04;letter-spacing:-.01em}
+.day__intro{max-width:28em;margin-top:1.5rem;color:var(--farina-70)}
+
+.day--alba{position:relative;isolation:isolate;overflow:hidden;padding-bottom:clamp(8rem,15vw,13rem);background:var(--sfoglia);color:var(--balsamico)}
+.day--alba::after{content:"";position:absolute;z-index:-1;right:clamp(-6rem,-3vw,-1rem);bottom:0;width:clamp(12rem,27vw,25rem);aspect-ratio:1;border-radius:50%;background:var(--sfoglia-chiara);transform:translateY(56%)}
+.alba__cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem clamp(2rem,4vw,4rem);max-width:54rem;margin-top:clamp(2rem,4vw,3.25rem)}
+.alba__cols p{color:var(--balsamico-78);font-size:1.1875rem;line-height:1.62}
+.alba__cols p:first-child{color:var(--balsamico)}
+
+.day--sera{background:var(--lambrusco)}
+.day--sera .day__time,.day--notte .day__time{color:var(--sfoglia)}
+.day__inner--banco{grid-template-columns:var(--time-col) minmax(0,1fr) minmax(0,1.05fr)}
+.prices{max-width:30rem;margin-top:2.25rem;border-top:1px solid var(--farina-16)}
+.prices li{display:flex;align-items:baseline;justify-content:space-between;gap:1.5rem;padding:1rem 0;border-bottom:1px solid var(--farina-16);font-size:1.1875rem}
+.price{color:var(--sfoglia);font-variant-numeric:tabular-nums lining-nums}
+.banco__photo{align-self:center;aspect-ratio:4/5;overflow:hidden}
+.banco__photo img{width:100%;height:100%;object-fit:cover;object-position:64% 50%}
+
+.day--notte{padding-top:0;background:var(--balsamico)}
+.sala{aspect-ratio:2/1;max-height:82vh;margin:0 calc(-1 * var(--gutter)) clamp(4.5rem,9vw,7rem);overflow:hidden}
+.sala img{width:100%;height:100%;object-fit:cover;object-position:50% 55%}
+.menu__head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem 3rem}
+.menu__intro{max-width:24em;color:var(--farina-70)}
+.courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(2.75rem,5vw,4rem) clamp(2.5rem,6vw,6rem);margin-top:clamp(3rem,6vw,4.5rem)}
+.course__name{padding-bottom:.85rem;border-bottom:1px solid var(--farina-16);color:var(--sfoglia);font-size:1.5rem;font-style:italic}
+.dish{padding-top:1.3rem}
+.dish__row{display:flex;align-items:baseline;gap:.6rem}
+.dish__name{font-size:1.3125rem;line-height:1.3}
+.dish__leader{flex:1 1 auto;min-width:1.5rem;border-bottom:1px dotted var(--farina-40);transform:translateY(-.28em)}
+.dish__price{color:var(--sfoglia);font-size:1.125rem;font-variant-numeric:tabular-nums lining-nums}
+.dish__desc{max-width:30em;margin-top:.25rem;color:var(--farina-70);font-size:1rem;line-height:1.5}
+.tasting{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1.5rem 3rem;margin-top:clamp(3rem,6vw,4.5rem);padding:clamp(1.75rem,3.5vw,2.75rem);border:1px solid rgba(232,184,78,.45)}
+.tasting__name{font-size:clamp(1.875rem,3vw,2.5rem);line-height:1.1}
+.tasting__text{margin-top:.6rem;color:var(--farina-70)}
+.tasting__price{display:flex;align-items:center;gap:1rem}
+.tasting__amount{color:var(--sfoglia);font-size:clamp(3rem,5vw,4.25rem);line-height:1}
+.tasting__note{color:var(--farina-70);font-size:1rem;line-height:1.45}
+.menu__note{max-width:52em;margin-top:2rem;color:var(--farina-70);font-size:.9375rem}
+
+/* Prenotazione */
+.booking-section{padding:clamp(5rem,10vw,8.5rem) var(--gutter);background:var(--notte)}
+.booking-section__inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:start;gap:clamp(3rem,7vw,7rem);max-width:84rem;margin:0 auto}
+.booking-intro{max-width:28em;margin-top:1.5rem;color:var(--farina-70)}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;max-width:40rem;margin-top:3rem}
+.facts__item--hours{grid-column:2;grid-row:1/span 2}
+.facts h3{margin-bottom:.5rem;color:var(--sfoglia);font-size:1.0625rem;font-style:italic}
+.facts p,.hours{font-size:1.0625rem;line-height:1.55}
+.facts a{text-decoration-thickness:1px;text-underline-offset:.25em}
+.hours{display:grid;gap:.35rem}
+.hours div{display:flex;justify-content:space-between;gap:1rem}
+.hours dt{color:var(--farina-70)}
+.hours dd{text-align:right}
+.facts__note{margin-top:.75rem;color:var(--farina-70)}
+
+.booking{max-width:46rem;padding:clamp(1.75rem,3.5vw,3rem);border-radius:4px;background:var(--balsamico)}
+.fields{display:grid;gap:0 1.5rem}
+.fields--3{grid-template-columns:1.3fr 1fr .9fr}
+.fields--2{grid-template-columns:1fr 1fr}
+.field{display:flex;flex-direction:column;gap:.35rem;min-width:0;margin-bottom:1.5rem}
+.field__label{color:var(--farina-70);font-size:.9375rem;font-style:italic}
+.field input,.field select,.field textarea{width:100%;min-width:0;padding:.45rem 0 .6rem;border:0;border-bottom:1px solid var(--farina-40);border-radius:0;background:transparent;color:var(--farina);font:inherit;font-size:1.125rem;line-height:1.4;color-scheme:dark;-webkit-appearance:none;appearance:none}
+.field select{padding-right:1.4rem;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23F2ECDF' stroke-opacity='.75' stroke-width='1.4'/%3E%3C/svg%3E") no-repeat right .15rem center;cursor:pointer}
+.field select option{background:var(--balsamico);color:var(--farina)}
+.field input::-webkit-calendar-picker-indicator{opacity:.75;cursor:pointer}
+.field textarea{min-height:2.6rem;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-bottom-color:var(--sfoglia);box-shadow:0 1px 0 var(--sfoglia)}
+.field input:user-invalid,.field textarea:user-invalid{border-bottom-color:var(--errore)}
+.field input::placeholder,.field textarea::placeholder{color:var(--farina-40)}
+.field__hint{margin:-.6rem 0 1.5rem;color:var(--sfoglia);font-style:italic}
+.booking__fine{margin-top:1rem;color:var(--farina-70);font-size:.875rem;text-align:center}
+.booking__done-title{font-size:clamp(1.75rem,3vw,2.25rem);line-height:1.15}
+.booking__summary{margin-top:1rem;color:var(--sfoglia);font-size:1.25rem}
+.booking__demo{max-width:32em;margin-top:1.5rem;color:var(--farina-70)}
+.booking__done .textlink{margin-top:1.75rem}
+.booking__done:focus{outline:none}
+
+/* Piede */
+.footer{overflow:hidden;padding:clamp(3.5rem,7vw,6rem) var(--gutter) 2rem;border-top:1px solid var(--farina-16);background:var(--notte)}
+.footer__mark{margin-left:-.05em;color:var(--sfoglia);font-size:clamp(4rem,20.5vw,19rem);line-height:.82;letter-spacing:-.025em}
+.footer__cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem 3rem;max-width:84rem;margin-top:clamp(2.5rem,5vw,4rem);color:var(--farina-70);font-size:1rem}
+.footer__cols a{text-underline-offset:.25em}
+.footer__small{margin-top:2.5rem;color:var(--farina-70);font-size:.875rem}
+
+/* Un solo momento in movimento: l'apertura della pagina */
+@media (prefers-reduced-motion:no-preference){
+  .js .hero__title,.js .hero__lead,.js .hero__body,.js .hero__actions{animation:rise 1s var(--ease) both}
+  .js .hero__lead{animation-delay:.12s}
+  .js .hero__body{animation-delay:.2s}
+  .js .hero__actions{animation-delay:.28s}
+  .js .hero__photo{animation:unveil 1.3s .1s var(--ease) both}
+  .js .meridian__line{animation:draw 1.4s .55s var(--ease) both}
+  .js .meridian__band::before{animation:draw .9s 1.45s var(--ease) both}
+  .js .meridian__tick,.js .meridian__mark,.js .meridian__label,.js .meridian__closed{animation:fade .7s 1.2s both}
+  .js .meridian__now{animation:fade .8s 2s both}
+  .meridian__now.is-open::after{animation:sun 2.8s 2.8s ease-in-out infinite}
+  .booking__done{animation:fade .5s var(--ease) both}
+  @keyframes rise{from{opacity:0;transform:translateY(.35em)}}
+  @keyframes unveil{from{clip-path:inset(0 0 100% 0)}}
+  @keyframes draw{from{transform:scaleX(0)}}
+  @keyframes fade{from{opacity:0}}
+  @keyframes sun{50%{box-shadow:0 0 0 7px rgba(242,236,223,.08),0 0 30px 10px rgba(232,184,78,.55)}}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Tablet e telefono */
+@media (max-width:1280px){
+  .booking-section__inner{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;min-height:0}
+  .hero__photo{grid-area:1/1;min-height:0;aspect-ratio:4/3}
+  .hero__text{grid-area:2/1;padding:2.25rem var(--gutter) 1rem}
+  .meridian{grid-area:3/1/4/2;padding-top:2rem}
+  .day__inner,.day__inner--banco{grid-template-columns:minmax(0,1fr);gap:1rem}
+  .day__time{font-size:2.5rem}
+  .banco__photo{aspect-ratio:4/3;margin-top:1.5rem}
+  .sala{aspect-ratio:4/3}
+  .alba__cols,.courses{grid-template-columns:minmax(0,1fr)}
+  .tasting{grid-template-columns:minmax(0,1fr)}
+  .booking-section__inner{grid-template-columns:minmax(0,1fr)}
+  .footer__cols{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  :root{--bar:4.25rem}
+  .bar__brand{font-size:1.4rem}
+  .bar__link--wide{display:none}
+  .hero__title{font-size:clamp(3.75rem,19vw,6rem)}
+  .meridian__head{flex-direction:column;align-items:flex-start}
+  .meridian__tick.is-sub::after,.meridian__band--banco .meridian__label{display:none}
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .facts__item--hours{grid-column:auto;grid-row:auto}
+  .fields--3{grid-template-columns:1fr 1fr}
+  .fields--3 .field:first-child{grid-column:1/-1}
+  .fields--2{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenuto">Vai al contenuto</a>
+
+<header class="bar">
+  <a class="bar__brand" href="#inizio">Meridiano</a>
+  <nav class="bar__nav" aria-label="Sezioni del sito">
+    <a class="bar__link" href="#menu">Menu</a>
+    <a class="bar__link bar__link--wide" href="#banco">Il banco</a>
+    <a class="bar__link bar__link--wide" href="#dove">Dove siamo</a>
+  </nav>
+  <a class="button button--small" href="#prenota">Prenota</a>
+</header>
+
+<main id="contenuto">
+  <section class="hero" id="inizio" aria-labelledby="titolo">
+    <div class="hero__text">
+      <h1 class="hero__title" id="titolo">Meridiano</h1>
+      <p class="hero__lead">Cucina emiliana nel centro di Modena.</p>
+      <p class="hero__body">Tortellini chiusi a mano ogni mattina, fornitori a meno di cinquanta chilometri e una carta che cambia quattro volte l’anno. Ventotto coperti, a due passi dal Duomo.</p>
+      <div class="hero__actions">
+        <a class="button" href="#prenota">Prenota un tavolo</a>
+        <a class="textlink" href="#menu">Guarda il menu</a>
+      </div>
+    </div>
+    <figure class="hero__photo">
+      <img src="assets/img/piatto.jpg" width="1376" height="768" fetchpriority="high" alt="Filetto di salmerino scottato su crema di zucca, con germogli e gocce di olio alle erbe, in un piatto di ceramica">
+      <figcaption>Salmerino alpino, crema di zucca, olio alle erbe.</figcaption>
+    </figure>
+    <div class="meridian">
+      <div class="meridian__head">
+        <p class="meridian__today" data-m-today>Orari</p>
+        <p class="meridian__status" data-m-status>Cena dal martedì alla domenica, pranzo la domenica.</p>
+      </div>
+      <div class="meridian__scale" data-m-scale aria-hidden="true">
+        <span class="meridian__line"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="day day--alba" id="cucina" aria-labelledby="t-alba">
+    <div class="day__inner">
+      <p class="day__time"><time datetime="06:00">6:00</time></p>
+      <div class="day__body">
+        <h2 class="day__title" id="t-alba">All’alba si tira la sfoglia.</h2>
+        <div class="alba__cols">
+          <p>Alle sei la cucina è già accesa. Sfoglia al mattarello, uova di galline allevate a terra, ripieni preparati la sera prima: i tortellini del giorno si chiudono a mano, uno per uno.</p>
+          <p>Il resto arriva da vicino: il Parmigiano dalle colline di Pavullo, il Lambrusco da Sorbara, le farine da un mulino a pietra della Bassa. Una carta per stagione e nessuna fretta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day day--sera" id="banco" aria-labelledby="t-banco">
+    <div class="day__inner day__inner--banco">
+      <p class="day__time"><time datetime="18:30">18:30</time></p>
+      <div class="day__body">
+        <h2 class="day__title" id="t-banco">Prima di&nbsp;cena, il&nbsp;banco.</h2>
+        <p class="day__intro">Dalle 18:30 il banco in marmo è aperto anche senza prenotazione. Lambrusco di Sorbara alla mescita, vermouth fatto in casa e un cocktail che trovi solo qui.</p>
+        <ul class="prices">
+          <li><span>Lambrusco di Sorbara, al calice</span><span class="price">6<span class="sr-only"> euro</span></span></li>
+          <li><span>Vermouth della casa</span><span class="price">8<span class="sr-only"> euro</span></span></li>
+          <li><span>Spritz all’Aceto Balsamico</span><span class="price">10<span class="sr-only"> euro</span></span></li>
+        </ul>
+      </div>
+      <figure class="banco__photo">
+        <img src="assets/img/banco.jpg" width="1376" height="768" loading="lazy" alt="Il barman versa un cocktail al bancone in marmo nero, davanti agli scaffali in noce illuminati">
+      </figure>
+    </div>
+  </section>
+
+  <section class="day day--notte" id="cena" aria-labelledby="t-menu">
+    <figure class="sala">
+      <img src="assets/img/sala.jpg" width="2576" height="1438" loading="lazy" alt="La sala la sera: tavoli in noce con le candele, lampade nere a sospensione e, sul fondo, il bancone in marmo nero">
+    </figure>
+    <div class="day__inner" id="menu">
+      <p class="day__time"><time datetime="19:30">19:30</time></p>
+      <div class="day__body">
+        <div class="menu__head">
+          <h2 class="day__title" id="t-menu">La carta d’autunno.</h2>
+          <p class="menu__intro">Cambia quattro volte l’anno. Questa sa di zucca, castagne e funghi del Frignano.</p>
+        </div>
+
+        <div class="courses">
+          <div class="course">
+            <h3 class="course__name">Antipasti</h3>
+            <ul>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Crescentine e pesto modenese</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">12<span class="sr-only"> euro</span></span></p><p class="dish__desc">Lardo battuto con aglio e rosmarino, Parmigiano Reggiano 30 mesi.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Battuta di manzo al coltello</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">18<span class="sr-only"> euro</span></span></p><p class="dish__desc">Parmigiano Reggiano 40 mesi, Aceto Balsamico Tradizionale, tuorlo marinato.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Zucca arrosto</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">14<span class="sr-only"> euro</span></span></p><p class="dish__desc">Crema di Parmigiano, semi tostati, salvia croccante.</p></li>
+            </ul>
+          </div>
+          <div class="course">
+            <h3 class="course__name">Primi</h3>
+            <ul>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Tortellini in brodo di cappone</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">18<span class="sr-only"> euro</span></span></p><p class="dish__desc">Chiusi a mano la mattina stessa.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Tortelli di zucca</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">16<span class="sr-only"> euro</span></span></p><p class="dish__desc">Burro nocciola, amaretti, salvia.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Gnocchi di castagne</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">17<span class="sr-only"> euro</span></span></p><p class="dish__desc">Funghi porcini del Frignano, crema di Parmigiano.</p></li>
+            </ul>
+          </div>
+          <div class="course">
+            <h3 class="course__name">Secondi</h3>
+            <ul>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Salmerino alpino</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">26<span class="sr-only"> euro</span></span></p><p class="dish__desc">Crema di zucca, olio alle erbe, germogli.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Guancia di manzo al Lambrusco</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">26<span class="sr-only"> euro</span></span></p><p class="dish__desc">Otto ore di cottura, purè di patate affumicato.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Cotechino di Modena</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">20<span class="sr-only"> euro</span></span></p><p class="dish__desc">Lenticchie in umido, zabaione salato.</p></li>
+            </ul>
+          </div>
+          <div class="course">
+            <h3 class="course__name">Dolci</h3>
+            <ul>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Zuppa inglese</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">9<span class="sr-only"> euro</span></span></p><p class="dish__desc">Alchermes, crema pasticcera, cioccolato fondente.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Bensone tiepido</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">9<span class="sr-only"> euro</span></span></p><p class="dish__desc">Gelato alla crema e saba.</p></li>
+              <li class="dish"><p class="dish__row"><span class="dish__name">Gelato al Parmigiano Reggiano</span><span class="dish__leader" aria-hidden="true"></span><span class="dish__price">10<span class="sr-only"> euro</span></span></p><p class="dish__desc">Pere cotte nel vino, Aceto Balsamico Tradizionale.</p></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tasting">
+          <div>
+            <h3 class="tasting__name">Percorso Meridiano</h3>
+            <p class="tasting__text">Sei portate scelte dalla cucina, per tutto il tavolo.</p>
+          </div>
+          <p class="tasting__price"><span class="tasting__amount">75<span class="sr-only"> euro</span></span><span class="tasting__note">a persona<br>vini in abbinamento 40</span></p>
+        </div>
+        <p class="menu__note">Prezzi in euro, coperto 3. Per allergie, intolleranze e scelte vegetariane chiedi al personale: ti diamo l’elenco degli allergeni di ogni piatto.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking-section" id="prenota" aria-labelledby="t-prenota">
+    <div class="booking-section__inner">
+      <div>
+        <h2 class="day__title" id="t-prenota">Prenota un tavolo.</h2>
+        <p class="booking-intro">Scegli giorno, orario e persone: ti rispondiamo con un messaggio entro un’ora. Per gruppi di più di otto persone, chiamaci.</p>
+        <div class="facts" id="dove">
+          <div class="facts__item">
+            <h3>Dove siamo</h3>
+            <p>Centro storico, 41121 Modena.<br>A due passi dal Duomo.</p>
+          </div>
+          <div class="facts__item facts__item--hours">
+            <h3>Orari</h3>
+            <dl class="hours">
+              <div><dt>Martedì–sabato</dt><dd>19:30–23:00</dd></div>
+              <div><dt>Domenica</dt><dd>12:30–14:30<br>19:30–22:30</dd></div>
+              <div><dt>Lunedì</dt><dd>chiuso</dd></div>
+            </dl>
+            <p class="facts__note">Il banco apre alle 18:30.</p>
+          </div>
+          <div class="facts__item">
+            <h3>Telefono</h3>
+            <p><a href="tel:+390590000000">059 000 0000</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking">
+        <form class="booking__form" id="booking-form">
+          <div class="fields fields--3">
+            <label class="field"><span class="field__label">Giorno</span><input type="date" name="giorno" required></label>
+            <label class="field"><span class="field__label">Orario</span><select name="orario" required><option value="">Scegli il giorno</option></select></label>
+            <label class="field"><span class="field__label">Persone</span>
+              <select name="persone" required>
+                <option value="1">1 persona</option>
+                <option value="2" selected>2 persone</option>
+                <option value="3">3 persone</option>
+                <option value="4">4 persone</option>
+                <option value="5">5 persone</option>
+                <option value="6">6 persone</option>
+                <option value="7">7 persone</option>
+                <option value="8">8 persone</option>
+              </select>
+            </label>
+          </div>
+          <p class="field__hint" data-date-hint hidden></p>
+          <div class="fields fields--2">
+            <label class="field"><span class="field__label">Nome</span><input name="nome" autocomplete="name" required></label>
+            <label class="field"><span class="field__label">Telefono</span><input type="tel" name="telefono" autocomplete="tel" inputmode="tel" minlength="6" required></label>
+          </div>
+          <label class="field"><span class="field__label">Email, se vuoi la conferma anche lì</span><input type="email" name="email" autocomplete="email"></label>
+          <label class="field"><span class="field__label">Note per la cucina</span><textarea name="note" rows="2" placeholder="Allergie, intolleranze, un compleanno da festeggiare"></textarea></label>
+          <button class="button button--wide" type="submit">Invia la richiesta</button>
+          <p class="booking__fine">Usiamo i tuoi dati solo per gestire la prenotazione.</p>
+        </form>
+
+        <div class="booking__done" data-done hidden tabindex="-1">
+          <h3 class="booking__done-title">Ecco la tua richiesta, <span data-done-name></span>.</h3>
+          <p class="booking__summary" data-done-summary></p>
+          <p class="booking__demo">Questo è un sito dimostrativo e la richiesta non è stata inviata. Sul sito di un ristorante vero arriverebbe al locale, e tu riceveresti la conferma per SMS o per email.</p>
+          <button class="textlink" type="button" data-done-reset>Fai un’altra richiesta</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p class="footer__mark" aria-hidden="true">Meridiano</p>
+  <div class="footer__cols">
+    <p>Centro storico, 41121 Modena<br><a href="tel:+390590000000">059 000 0000</a></p>
+    <p>Cena dal martedì alla domenica, dalle 19:30.<br>La domenica anche a pranzo, dalle 12:30.</p>
+    <p>Ristorante immaginario: nomi, piatti e foto sono di fantasia. Questo è un sito dimostrativo.<br>Design e sviluppo: Francesco Torricelli.</p>
+  </div>
+  <p class="footer__small">Nessun cookie, nessun tracciamento. © <span data-year>2026</span></p>
+</footer>
+
+<script>
+(() => {
+  const DAYS = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
+  // Servizi del giorno in minuti dalla mezzanotte: [apertura, chiusura]. 0 = domenica.
+  const SERVICES = { 0: [[750, 870], [1170, 1350]], 1: [], 2: [[1170, 1380]], 3: [[1170, 1380]], 4: [[1170, 1380]], 5: [[1170, 1380]], 6: [[1170, 1380]] };
+  const BANCO = 1110; // 18:30
+  const DINNER = ['19:30', '20:00', '20:30', '21:00', '21:30'];
+  const SLOTS = { 0: ['12:30', '13:00', '13:30', '19:30', '20:00', '20:30', '21:00'], 1: [], 2: DINNER, 3: DINNER, 4: DINNER, 5: DINNER, 6: DINNER };
+
+  const hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  const toMin = (t) => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+
+  // Ora di Modena, qualunque sia il fuso di chi visita
+  const now = (() => {
+    const p = {};
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23', weekday: 'short' })
+      .formatToParts(new Date()).forEach((x) => { p[x.type] = x.value; });
+    return {
+      dow: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday),
+      min: Number(p.hour) * 60 + Number(p.minute),
+      iso: `${p.year}-${p.month}-${p.day}`,
+    };
+  })();
+
+  function status() {
+    const today = SERVICES[now.dow];
+    for (const [s, e] of today) {
+      if (now.min >= s && now.min < e) return { open: true, text: `Aperti adesso, fino alle ${hhmm(e)}.` };
+    }
+    if (today.length) {
+      const dinner = today[today.length - 1][0];
+      if (now.min >= BANCO && now.min < dinner) return { open: true, text: `Il banco è aperto. La cucina apre alle ${hhmm(dinner)}.` };
+      const next = today.find(([s]) => s > now.min);
+      if (next) {
+        if (next[0] < 1080) return { open: false, text: `Oggi apriamo alle ${hhmm(next[0])}.` };
+        const afterLunch = today[0][0] < next[0] && now.min >= today[0][1];
+        return { open: false, text: `${afterLunch ? 'Riapriamo' : 'Apriamo'} stasera alle ${hhmm(next[0])}.` };
+      }
+    }
+    for (let d = 1; d <= 7; d++) {
+      const day = (now.dow + d) % 7;
+      if (SERVICES[day].length) {
+        const s = hhmm(SERVICES[day][0][0]);
+        return { open: false, text: d === 1 ? `Riapriamo domani alle ${s}.` : `Riapriamo ${DAYS[day]} alle ${s}.` };
+      }
+    }
+    return { open: false, text: '' };
+  }
+
+  // La meridiana
+  const scale = document.querySelector('[data-m-scale]');
+  if (scale) {
+    const START = 360, END = 1440;
+    const pct = (m) => ((Math.min(Math.max(m, START), END) - START) / (END - START)) * 100;
+    const add = (cls, left, label) => {
+      const el = document.createElement('span');
+      el.className = cls;
+      el.style.left = `${pct(left)}%`;
+      if (label) { const l = document.createElement('span'); l.className = 'meridian__label'; l.textContent = label; el.append(l); }
+      scale.append(el);
+      return el;
+    };
+    for (let h = 6; h <= 24; h++) {
+      if (h % 3) { add('meridian__tick', h * 60); continue; }
+      const t = add(`meridian__tick is-major${h % 6 ? ' is-sub' : ''}`, h * 60);
+      t.dataset.label = String(h);
+    }
+    const services = SERVICES[now.dow];
+    if (services.length) {
+      add('meridian__mark', START, 'sfoglia');
+      const lastEnd = services[services.length - 1][1];
+      add('meridian__band meridian__band--banco', BANCO, 'banco').style.width = `${pct(lastEnd) - pct(BANCO)}%`;
+      services.forEach(([s, e]) => { add('meridian__band', s, s < 1080 ? 'pranzo' : 'cena').style.width = `${pct(e) - pct(s)}%`; });
+    } else {
+      const c = document.createElement('span');
+      c.className = 'meridian__closed';
+      c.textContent = 'Il lunedì siamo chiusi';
+      scale.append(c);
+    }
+    const st = status();
+    const dot = add('meridian__now', now.min, `adesso, ${hhmm(now.min)}`);
+    const p = pct(now.min);
+    if (p < 8) dot.classList.add('is-start'); else if (p > 92) dot.classList.add('is-end');
+    if (st.open) dot.classList.add('is-open');
+    document.querySelector('[data-m-status]').textContent = st.text;
+    const day = new Intl.DateTimeFormat('it-IT', { timeZone: 'Europe/Rome', weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
+    document.querySelector('[data-m-today]').textContent = `Oggi, ${day}`;
+  }
+
+  // Prenotazione (dimostrativa: non invia nulla)
+  const form = document.getElementById('booking-form');
+  if (form) {
+    const done = document.querySelector('[data-done]');
+    const hint = document.querySelector('[data-date-hint]');
+    const { giorno, orario, persone, nome } = form.elements;
+    const addDays = (iso, n) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+    const dowOf = (iso) => new Date(`${iso}T12:00:00Z`).getUTCDay();
+    const slotsFor = (iso) => SLOTS[dowOf(iso)].filter((t) => iso !== now.iso || toMin(t) >= now.min + 60);
+
+    const fillTimes = () => {
+      const iso = giorno.value;
+      const prev = orario.value;
+      const list = iso ? slotsFor(iso) : [];
+      orario.innerHTML = '';
+      if (!list.length) {
+        orario.add(new Option(!iso ? 'Scegli il giorno' : dowOf(iso) === 1 ? 'Chiuso' : 'Esauriti', ''));
+        hint.textContent = !iso ? '' : dowOf(iso) === 1 ? 'Il lunedì siamo chiusi. Scegli un altro giorno.' : 'Per oggi gli orari sono finiti. Scegli un altro giorno.';
+        hint.hidden = !iso;
+        return;
+      }
+      hint.hidden = true;
+      list.forEach((t) => orario.add(new Option(t, t)));
+      orario.value = list.includes(prev) ? prev : list.includes('20:30') ? '20:30' : list[0];
+    };
+
+    const setDefaults = () => {
+      giorno.min = now.iso;
+      giorno.max = addDays(now.iso, 90);
+      for (let i = 0; i < 14; i++) {
+        const iso = addDays(now.iso, i);
+        if (slotsFor(iso).length) { giorno.value = iso; break; }
+      }
+      fillTimes();
+    };
+
+    setDefaults();
+    giorno.addEventListener('change', fillTimes);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!orario.value) { hint.hidden = false; giorno.focus(); return; }
+      const label = new Intl.DateTimeFormat('it-IT', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(`${giorno.value}T12:00:00Z`));
+      const n = Number(persone.value);
+      done.querySelector('[data-done-name]').textContent = nome.value.trim().split(/\s+/)[0];
+      done.querySelector('[data-done-summary]').textContent = `${label.charAt(0).toUpperCase()}${label.slice(1)}, ore ${orario.value}, ${n} ${n === 1 ? 'persona' : 'persone'}.`;
+      form.hidden = true;
+      done.hidden = false;
+      done.focus();
+    });
+
+    done.querySelector('[data-done-reset]').addEventListener('click', () => {
+      form.reset();
+      setDefaults();
+      done.hidden = true;
+      form.hidden = false;
+      nome.focus();
+    });
+  }
+
+  document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
+})();
+</script>
+</body>
+</html>
